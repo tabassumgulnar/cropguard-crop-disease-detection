@@ -6,11 +6,12 @@ Main Application Entrypoint & System Hub
 
 import streamlit as st
 import db
+import model
 
 # Configure page metadata
 st.set_page_config(
     page_title="CropGuard | Early Crop Disease & Pest Detection",
-    page_icon="🌱",
+    page_icon="logo.jpeg",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -18,221 +19,409 @@ st.set_page_config(
 # Initialize database schema
 db.init_db()
 
-# Custom CSS for polished government-grade agro-informatics styling
+# Custom CSS for modern, high-contrast, production-grade agricultural styling
 st.markdown(
     """
     <style>
+    /* Global Styles */
+    .stApp {
+        background-color: #f8fafc;
+    }
+    
+    /* Top Header Banner */
     .main-header {
-        background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 60%, #40916c 100%);
-        padding: 24px 28px;
-        border-radius: 14px;
-        color: white;
+        background: linear-gradient(135deg, #064e3b 0%, #047857 55%, #059669 100%);
+        padding: 28px 32px;
+        border-radius: 16px;
+        color: #ffffff;
         margin-bottom: 24px;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        box-shadow: 0 10px 25px -5px rgba(6, 78, 59, 0.25), 0 8px 10px -6px rgba(6, 78, 59, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.15);
     }
     .main-header h1 {
         color: #ffffff !important;
         font-size: 2.3rem;
-        font-weight: 700;
+        font-weight: 800;
         margin: 0;
         letter-spacing: -0.5px;
     }
     .main-header p {
-        color: #d8f3dc;
+        color: #ecfdf5 !important;
         font-size: 1.05rem;
-        margin-top: 6px;
+        margin-top: 8px;
         margin-bottom: 0;
+        opacity: 0.95;
     }
     .badge-tag {
         display: inline-block;
-        background-color: #ffd166;
-        color: #1b4332;
-        padding: 4px 10px;
-        border-radius: 6px;
+        background-color: #fbbf24;
+        color: #78350f;
+        padding: 4px 12px;
+        border-radius: 9999px;
         font-weight: 700;
-        font-size: 0.8rem;
-        margin-bottom: 10px;
+        font-size: 0.75rem;
+        margin-bottom: 12px;
         letter-spacing: 0.5px;
         text-transform: uppercase;
     }
+    
+    /* Metric Cards */
     .metric-card {
         background-color: #ffffff;
-        border: 1px solid #e9ecef;
+        border: 1px solid #e2e8f0;
         border-radius: 12px;
-        padding: 16px;
+        padding: 18px 14px;
         text-align: center;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
     .metric-val {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #1b4332;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #064e3b;
+        line-height: 1.1;
     }
     .metric-lbl {
-        font-size: 0.85rem;
-        color: #6c757d;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        margin-top: 6px;
     }
+    .metric-sub {
+        font-size: 0.7rem;
+        color: #94a3b8;
+        margin-top: 2px;
+    }
+    
+    /* Navigation / Feature Cards */
     .feature-card {
-        background-color: #f8f9fa;
-        border-left: 4px solid #2d6a4f;
-        padding: 16px;
-        border-radius: 0 10px 10px 0;
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 22px 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 240px;
         margin-bottom: 12px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    .feature-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+    .feature-card-farmer {
+        border-top: 5px solid #10b981;
+    }
+    .feature-card-officer {
+        border-top: 5px solid #3b82f6;
+    }
+    .feature-card-advisory {
+        border-top: 5px solid #8b5cf6;
+    }
+    .feature-card h4 {
+        color: #0f172a !important;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .feature-card p {
+        color: #334155 !important;
+        font-size: 0.92rem;
+        line-height: 1.55;
+        margin-bottom: 14px;
+        flex-grow: 1;
+    }
+    .card-meta {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #059669;
+        background-color: #ecfdf5;
+        padding: 4px 10px;
+        border-radius: 6px;
+        margin-bottom: 12px;
+        display: inline-block;
+        border: 1px solid #d1fae5;
+    }
+    .card-meta-blue {
+        color: #1d4ed8;
+        background-color: #eff6ff;
+        border: 1px solid #dbeafe;
+    }
+    .card-meta-purple {
+        color: #6d28d9;
+        background-color: #f5f3ff;
+        border: 1px solid #ede9fe;
+    }
+
+    /* Disclaimer & Callout Boxes */
     .disclaimer-box {
-        background-color: #fff3cd;
-        border: 1px solid #ffeeba;
-        border-left: 5px solid #ffc107;
-        padding: 14px 18px;
-        border-radius: 8px;
-        color: #856404;
-        font-size: 0.9rem;
-        margin-top: 20px;
+        background-color: #fffbeb;
+        border: 1px solid #fde68a;
+        border-left: 5px solid #f59e0b;
+        padding: 16px 20px;
+        border-radius: 10px;
+        color: #92400e;
+        font-size: 0.88rem;
+        line-height: 1.5;
+        margin-top: 24px;
+    }
+    
+    .status-panel {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-bottom: 14px;
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# Sidebar with system metadata
+# Sidebar Navigation and System Info
 with st.sidebar:
     st.image(
-        "https://images.unsplash.com/photo-1592417817098-8f3d6910985c?w=600&auto=format&fit=crop&q=80",
-        caption="CropGuard AI Surveillance",
+        "logo.jpeg",
+        caption="CropGuard: Healthy Crops, Brighter Future",
         use_container_width=True,
     )
-    st.markdown("### 🌾 CropGuard System Info")
-    st.markdown(
-        """
-        **Type:** Open-Source Agro-Informatics  
-        **Focus Crops:** 🍅 Tomato, 🌿 Cotton, 🧅 Onion  
-        **Target Region:** Maharashtra & Central India  
-        **Core Architecture:**
-        - Vision Transformer / MobileNet (Hugging Face)
-        - Open-Meteo Realtime Agrometeorology API
-        - Trilingual IPM Advisory (EN, HI, MR)
-        - SQLite Persistence & Folium Spatial Heatmap
-        - Human-in-the-Loop Officer Verification
-        """
-    )
+    
+    st.markdown("### 📍 Navigation")
+    st.page_link("app.py", label="Home Dashboard", icon="🏠")
+    st.page_link("pages/1_🌾_Farmer_Diagnosis.py", label="Farmer Diagnostic Portal", icon="🌾")
+    st.page_link("pages/2_🛡️_Officer_Dashboard.py", label="Officer GIS Dashboard", icon="🛡️")
+    st.page_link("pages/3_📚_Disease_Advisory.py", label="Trilingual IPM Catalog", icon="📚")
+    
     st.divider()
 
-    # Quick Demo Data Loader in Sidebar
-    st.markdown("#### ⚡ Quick Actions")
-    if st.button("📥 Load 32 Demo Reports (Maharashtra)", use_container_width=True):
-        count = db.load_demo_data()
-        st.success(f"Loaded {count} sample reports across Maharashtra!")
-        st.rerun()
+    # System Status
+    st.markdown("### ⚙️ System Status")
+    engine_status = model.get_model_engine_status()
+    st.markdown(
+        f"""
+        <div class="status-panel">
+            <div style="font-size: 0.8rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Vision Engine</div>
+            <div style="font-size: 0.82rem; font-weight: 600; color: {'#059669' if engine_status['is_neural_model_loaded'] else '#d97706'};">
+                {engine_status['status_badge']}
+            </div>
+            <div style="font-size: 0.72rem; color: #64748b; margin-top: 4px;">
+                {engine_status['engine_name']}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    if st.button("🗑️ Reset Database", use_container_width=True):
-        db.delete_all_reports()
-        st.warning("Database cleared.")
-        st.rerun()
+    st.markdown(
+        """
+        **Focus Crops:** 🍅 Tomato, 🌿 Cotton, 🧅 Onion  
+        **Region:** Maharashtra & Central India  
+        **Confidence Gate:** Strict 60% Safety Threshold
+        """
+    )
+    
+    st.divider()
 
-# Main Header
-st.markdown(
-    """
-    <div class="main-header">
-        <span class="badge-tag">CropGuard: An Open-Source Crop Disease and Pest Detection Tool</span>
-        <h1>🌱 CropGuard: Early Crop Disease & Pest Detection</h1>
-        <p>AI-Powered Plant Pathology, Live Weather Epidemiology, and Trilingual Integrated Pest Management (IPM)</p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+    # Database Demo Actions
+    st.markdown("### ⚡ Database Operations")
+    col_d1, col_d2 = st.columns(2)
+    with col_d1:
+        if st.button("📥 Seed Demo", use_container_width=True, help="Populate 32 Maharashtra district reports"):
+            count = db.load_demo_data()
+            st.success(f"Loaded {count} demo records.")
+            st.rerun()
+    with col_d2:
+        if st.button("🗑️ Reset DB", use_container_width=True, help="Clear all records in SQLite"):
+            db.delete_all_reports()
+            st.warning("Database reset.")
+            st.rerun()
 
-# Fetch quick metrics
+# Main Header Banner with Logo
+col_h1, col_h2 = st.columns([1, 6])
+with col_h1:
+    st.image("logo.jpeg", use_container_width=True)
+with col_h2:
+    st.markdown(
+        """
+        <div class="main-header" style="margin-bottom: 0;">
+            <span class="badge-tag">Open-Source Agro-Informatics Platform</span>
+            <h1>🌱 CropGuard: Early Crop Disease & Pest Detection</h1>
+            <p>AI-Powered Plant Pathology, Open-Meteo Weather Epidemiology, and Trilingual Integrated Pest Management (IPM)</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
+
+# Fetch verified database statistics
 stats = db.get_summary_stats()
+
+# Statistics Section with transparent attribution
+st.markdown("### 📊 Surveillance Database Metrics")
+st.caption("Live counts from local SQLite storage (`cropguard.db`). Reflects field entries and pre-seeded Maharashtra demo reports.")
 
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
     st.markdown(
-        f'<div class="metric-card"><div class="metric-val">{stats["total_reports"]}</div><div class="metric-lbl">Total Reports</div></div>',
+        f"""
+        <div class="metric-card">
+            <div class="metric-val">{stats["total_reports"]}</div>
+            <div class="metric-lbl">Total Reports</div>
+            <div class="metric-sub">Stored in DB</div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 with c2:
     st.markdown(
-        f'<div class="metric-card"><div class="metric-val" style="color: #e63946;">{stats["pending_verification"]}</div><div class="metric-lbl">Pending Review</div></div>',
+        f"""
+        <div class="metric-card">
+            <div class="metric-val" style="color: #dc2626;">{stats["pending_verification"]}</div>
+            <div class="metric-lbl">Pending Review</div>
+            <div class="metric-sub">Awaiting Officer</div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 with c3:
     st.markdown(
-        f'<div class="metric-card"><div class="metric-val" style="color: #2a9d8f;">{stats["confirmed"]}</div><div class="metric-lbl">Confirmed Cases</div></div>',
+        f"""
+        <div class="metric-card">
+            <div class="metric-val" style="color: #059669;">{stats["confirmed"]}</div>
+            <div class="metric-lbl">Confirmed Cases</div>
+            <div class="metric-sub">Officer Validated</div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 with c4:
     st.markdown(
-        f'<div class="metric-card"><div class="metric-val" style="color: #e76f51;">{stats["corrected"]}</div><div class="metric-lbl">Expert Corrected</div></div>',
+        f"""
+        <div class="metric-card">
+            <div class="metric-val" style="color: #d97706;">{stats["corrected"]}</div>
+            <div class="metric-lbl">Expert Corrected</div>
+            <div class="metric-sub">Active Learning</div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 with c5:
     st.markdown(
-        f'<div class="metric-card"><div class="metric-val" style="color: #f4a261;">{stats["uncertain"]}</div><div class="metric-lbl">Uncertain (&lt;60%)</div></div>',
+        f"""
+        <div class="metric-card">
+            <div class="metric-val" style="color: #ea580c;">{stats["uncertain"]}</div>
+            <div class="metric-lbl">Uncertain (&lt;60%)</div>
+            <div class="metric-sub">Safety Safeguard</div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Navigation Cards
-st.subheader("🚀 Navigate to CropGuard Modules")
+# Navigation Cards Section - Fixed blank appearance, clear contrast, icons, and direct functional buttons
+st.markdown("### 🚀 CropGuard Core Modules")
+st.caption("Select a dedicated module to perform leaf diagnosis, monitor regional spatial outbreaks, or browse trilingual advisories.")
+
 col_nav1, col_nav2, col_nav3 = st.columns(3)
 
 with col_nav1:
     st.markdown(
         """
-        <div class="feature-card">
-            <h4>🌾 1. Farmer Diagnostic Portal</h4>
-            <p>Upload or snap a leaf photo, pick your crop (Tomato, Cotton, Onion), and view instant AI classification with top-3 confidence scores, live weather risk assessment, and trilingual IPM steps.</p>
+        <div class="feature-card feature-card-farmer">
+            <div>
+                <span class="card-meta">Farmer Diagnostic Edge</span>
+                <h4>🌾 1. Farmer Diagnostic Portal</h4>
+                <p>Upload or take a photo of infected leaves for instant classification. Features top-3 probability distribution, live Open-Meteo weather risk alerts, and trilingual IPM recommendations.</p>
+            </div>
+            <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">
+                ✓ Strict &lt;60% safety gate &nbsp;•&nbsp; Tomato, Cotton, Onion
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    st.page_link("pages/1_🌾_Farmer_Diagnosis.py", label="Open Farmer Portal 👉", icon="🌾")
+    st.page_link(
+        "pages/1_🌾_Farmer_Diagnosis.py",
+        label="Open Farmer Diagnostic Portal →",
+        icon="🌾",
+        use_container_width=True,
+    )
 
 with col_nav2:
     st.markdown(
         """
-        <div class="feature-card">
-            <h4>🛡️ 2. Officer Surveillance Dashboard</h4>
-            <p>Interactive Folium spatial map with disease markers, epidemic heatmaps across Maharashtra, disease frequency charts, and a "Confirm / Correct Label" tool for expert retraining.</p>
+        <div class="feature-card feature-card-officer">
+            <div>
+                <span class="card-meta card-meta-blue">Surveillance & GIS</span>
+                <h4>🛡️ 2. Officer Surveillance Dashboard</h4>
+                <p>Interactive Folium GIS map with disease incidence pins, regional epidemic heatmaps across Maharashtra, disease frequency charts, and a human-in-the-loop audit tool to verify or correct diagnoses.</p>
+            </div>
+            <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">
+                ✓ Active learning loop &nbsp;•&nbsp; Export CSV surveillance logs
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    st.page_link("pages/2_🛡️_Officer_Dashboard.py", label="Open Officer Dashboard 👉", icon="🛡️")
+    st.page_link(
+        "pages/2_🛡️_Officer_Dashboard.py",
+        label="Open Officer Surveillance Dashboard →",
+        icon="🛡️",
+        use_container_width=True,
+    )
 
 with col_nav3:
     st.markdown(
         """
-        <div class="feature-card">
-            <h4>📚 3. Trilingual IPM Advisory Catalog</h4>
-            <p>Direct access to scientifically-grounded Integrated Pest Management (IPM) guidelines for 10+ major diseases in English, हिन्दी (Hindi), and मराठी (Marathi), following ICAR & KVK principles.</p>
+        <div class="feature-card feature-card-advisory">
+            <div>
+                <span class="card-meta card-meta-purple">Knowledge Base</span>
+                <h4>📚 3. Trilingual IPM Advisory Catalog</h4>
+                <p>Searchable agricultural knowledge base covering 11 foliar pathogens in English, हिन्दी (Hindi), and मराठी (Marathi). Follows ICAR and KVK guidance prioritizing Cultural and Biological controls over chemicals.</p>
+            </div>
+            <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">
+                ✓ Zero invented dosages &nbsp;•&nbsp; Pre-Harvest Intervals (PHI)
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    st.page_link("pages/3_📚_Disease_Advisory.py", label="Browse Advisory Catalog 👉", icon="📚")
+    st.page_link(
+        "pages/3_📚_Disease_Advisory.py",
+        label="Browse Trilingual IPM Catalog →",
+        icon="📚",
+        use_container_width=True,
+    )
 
 st.divider()
 
 # System Architecture Details
-st.subheader("🏗️ Architectural Workflow")
+st.markdown("### 🏗️ Architectural Workflow")
 arch_c1, arch_c2 = st.columns([3, 2])
 
 with arch_c1:
     st.markdown(
         """
         ```
-         [ Farmer Leaf Photo ]  ──▶ [ Hugging Face Vision Model / Agro-Engine ]
+         [ Farmer Leaf Photo ]  ──▶ [ Vision Transformer / Agro-Symptom Engine ]
                                             │
-                                            ▼ Top-3 Predictions
+                                            ▼ Top-3 Predictions with Confidences
         [ GPS Coordinates ]    ──▶ [ Open-Meteo Live API ] ──▶ [ Rule-based Fungal/Pest Risk ]
                                             │
                                             ▼
                     ┌───────────────────────────────────────────────┐
-                    │ Confidence Check:                             │
+                    │ Confidence Safeguard Check:                   │
                     │  - If Conf < 60% ──▶ "Uncertain – Consult AO" │
                     │  - If Conf ≥ 60% ──▶ Trilingual IPM Advisory  │
                     └───────────────────────────────────────────────┘
@@ -255,10 +444,10 @@ with arch_c2:
     st.markdown("#### 🔬 Key Engineering Highlights")
     st.markdown(
         """
-        - **Precision Computer Vision:** PlantVillage fine-tuned Hugging Face transformer models with top-3 rankings.
-        - **Safeguard Threshold:** Strict < 60% confidence gate preventing misleading pesticide purchases.
+        - **Precision Computer Vision:** Public plant disease classification model (`linkanjarad/mobilenet_v2_1.0_224-plant-disease-identification`) with resilient local computer-vision fallback.
+        - **Safeguard Threshold:** Strict < 60% confidence gate preventing misleading pesticide purchases when diagnosis is borderline.
         - **Epidemiological Context:** Rule-based weather synthesis combining humidity (>75%), temperature (18-28°C), and rain to predict fungal spore outbursts.
-        - **Responsible IPM:** Prioritizes Cultural ➔ Biological ➔ Chemical as strictly a last resort. Never generates unverified dosages.
+        - **Responsible IPM:** Prioritizes Cultural ➔ Biological ➔ Chemical as strictly a last resort. Never generates unverified chemical quantities.
         - **Active Learning Ready:** Agriculture Officers can correct diagnoses, building a verified ground-truth dataset for model retraining.
         """
     )

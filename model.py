@@ -12,7 +12,7 @@ import numpy as np
 
 # Canonical Hugging Face models for plant disease
 DEFAULT_HF_MODEL = "linkanjarad/mobilenet_v2_1.0_224-plant-disease-identification"
-FALLBACK_HF_MODEL = "ojimenez/plant-pathology-mobilenet"
+FALLBACK_HF_MODEL = "gianlab/swin-tiny-patch4-window7-224-finetuned-plantdisease"
 
 # Global pipeline cache
 _TRANSFORMERS_PIPELINE = None
@@ -132,6 +132,33 @@ def get_hf_classifier():
             _MODEL_LOAD_ERROR = f"Transformers/HuggingFace model load notice: {str(err2)}"
             _TRANSFORMERS_PIPELINE = None
             return None, _MODEL_LOAD_ERROR
+
+
+def get_model_engine_status() -> Dict[str, Any]:
+    """
+    Returns the current status of the deep learning pipeline vs heuristic engine.
+    Ensures zero fabricated claims of AI operation.
+    """
+    pipe, err = get_hf_classifier()
+    if pipe is not None:
+        return {
+            "is_neural_model_loaded": True,
+            "engine_name": "Hugging Face ViT/MobileNet Neural Pipeline",
+            "active_model": DEFAULT_HF_MODEL,
+            "status_badge": "🟢 Neural Vision Pipeline Active",
+            "details": "Pretrained plant disease deep learning pipeline loaded and ready for leaf inference.",
+        }
+    else:
+        return {
+            "is_neural_model_loaded": False,
+            "engine_name": "Computer-Vision Agro-Heuristic Symptom Engine",
+            "active_model": "Visual Spectrum & Necrosis Feature Extractor",
+            "status_badge": "🟡 Agro-Visual Heuristic Engine Active",
+            "details": (
+                f"Neural weights not loaded locally ({err or 'PyTorch/Transformers package environment'}). "
+                "Operating in resilient computer-vision symptom analysis mode."
+            ),
+        }
 
 
 def analyze_leaf_visual_features(img: Image.Image) -> Dict[str, float]:

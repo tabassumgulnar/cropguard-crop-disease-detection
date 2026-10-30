@@ -17,7 +17,7 @@ import weather
 # Page Config
 st.set_page_config(
     page_title="Farmer Diagnostic Portal | CropGuard",
-    page_icon="🌾",
+    page_icon="logo.jpeg",
     layout="wide",
 )
 
@@ -109,6 +109,21 @@ def load_advisory_data():
         return json.load(f)
 
 advisory_db = load_advisory_data()
+
+# Clean Organized Navigation Sidebar
+with st.sidebar:
+    st.image("logo.jpeg", use_container_width=True)
+    st.markdown("### 📍 Navigation")
+    st.page_link("app.py", label="Home Dashboard", icon="🏠")
+    st.page_link("pages/1_🌾_Farmer_Diagnosis.py", label="Farmer Diagnostic Portal", icon="🌾")
+    st.page_link("pages/2_🛡️_Officer_Dashboard.py", label="Officer GIS Dashboard", icon="🛡️")
+    st.page_link("pages/3_📚_Disease_Advisory.py", label="Trilingual IPM Catalog", icon="📚")
+    st.divider()
+    st.markdown("### ⚙️ Engine State")
+    engine_status = model.get_model_engine_status()
+    st.caption(f"{engine_status['status_badge']}\n\n*{engine_status['engine_name']}*")
+    st.divider()
+    st.caption("CropGuard • Open-Source Agro-Informatics")
 
 # Header Banner
 st.markdown(
