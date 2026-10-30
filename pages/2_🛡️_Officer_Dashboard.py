@@ -1,8 +1,10 @@
 """
 CropGuard Agriculture Officer Surveillance Dashboard
 CropGuard: an open-source crop disease and pest detection tool
-Spatial GIS Epidemiological Map (Folium Pins & HeatMap), Disease Frequency Analytics,
-Recent Reports Audit Table, and Human-in-the-Loop "Confirm / Correct Label" Active Learning Control.
+Spatial GIS Epidemiological Map (Folium Pins & HeatMap using OpenStreetMap),
+Disease Frequency Analytics, Field Surveillance Registry, and
+Human-in-the-Loop "Confirm / Correct Label" Active Learning Control.
+Fully localized in English, Hindi, and Marathi with persistent session state.
 """
 
 import streamlit as st
@@ -12,6 +14,8 @@ from folium.plugins import HeatMap, MarkerCluster
 import plotly.express as px
 import db
 import model
+import translations
+from translations import t
 
 # Page Configuration
 st.set_page_config(
@@ -19,6 +23,10 @@ st.set_page_config(
     page_icon="logo.jpeg",
     layout="wide",
 )
+
+# Initialize language session state
+translations.init_language_state()
+lang_code = translations.get_current_language()
 
 # Custom Styling
 st.markdown(
@@ -50,42 +58,47 @@ st.markdown(
 
 # Header
 st.markdown(
-    """
+    f"""
     <div class="officer-banner">
-        <h2>🛡️ Agriculture Officer Epidemiological Dashboard</h2>
+        <h2>{t('officer_banner_title', lang_code)}</h2>
         <p style="margin: 4px 0 0 0; opacity: 0.95;">
-            Maharashtra Disease Surveillance, Hotspot Heatmapping & Ground-Truth Verification
+            {t('officer_banner_subtitle', lang_code)}
         </p>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# Clean Organized Navigation Sidebar
+# Navigation Sidebar
 with st.sidebar:
     st.image("logo.jpeg", use_container_width=True)
-    st.markdown("### 📍 Navigation")
-    st.page_link("app.py", label="Home Dashboard", icon="🏠")
-    st.page_link("pages/1_🌾_Farmer_Diagnosis.py", label="Farmer Diagnostic Portal", icon="🌾")
-    st.page_link("pages/2_🛡️_Officer_Dashboard.py", label="Officer GIS Dashboard", icon="🛡️")
-    st.page_link("pages/3_📚_Disease_Advisory.py", label="Trilingual IPM Catalog", icon="📚")
+    
+    # Persistent Language Selector
+    lang_code = translations.render_language_selector(sidebar=True, key_prefix="officer")
+
+    st.markdown(f"### 📍 {t('nav_heading', lang_code)}")
+    st.page_link("app.py", label=t("nav_home", lang_code), icon="🏠")
+    st.page_link("pages/1_🌾_Farmer_Diagnosis.py", label=t("nav_farmer", lang_code), icon="🌾")
+    st.page_link("pages/2_🛡️_Officer_Dashboard.py", label=t("nav_officer", lang_code), icon="🛡️")
+    st.page_link("pages/3_📚_Disease_Advisory.py", label=t("nav_advisory", lang_code), icon="📚")
     st.divider()
-    st.markdown("### 🏛️ Surveillance Scope")
-    st.caption("**State:** Maharashtra\n\n**Focus Districts:** Pune, Nashik, Jalgaon, Ahmednagar, Solapur, Nagpur, Kolhapur")
+    
+    st.markdown(f"### 🏛️ {t('surveillance_scope', lang_code)}")
+    st.caption(t("surveillance_state", lang_code))
     st.divider()
-    st.caption("CropGuard • Open-Source Agro-Informatics")
+    st.caption(t("footer_credit", lang_code))
 
 
 # Top Action Toolbar
-col_btn1, col_btn2, col_btn3 = st.columns([2, 2, 4])
+col_btn1, col_btn2, col_btn3 = st.columns([2.5, 2, 4])
 with col_btn1:
-    if st.button("📥 Load Demo Data (~32 Maharashtra Reports)", type="primary", use_container_width=True):
+    if st.button(t("btn_seed_demo", lang_code), type="primary", use_container_width=True):
         count = db.load_demo_data()
-        st.success(f"Successfully inserted {count} realistic Maharashtra field reports!")
+        st.success(f"Successfully loaded {count} field reports!")
         st.rerun()
 
 with col_btn2:
-    if st.button("🔄 Refresh Data", use_container_width=True):
+    if st.button(t("btn_refresh", lang_code), use_container_width=True):
         st.rerun()
 
 # Retrieve latest reports
@@ -95,15 +108,15 @@ df_reports = db.get_all_reports()
 stats = db.get_summary_stats()
 kpi1, kpi2, kpi3, kpi4, kpi5 = st.columns(5)
 with kpi1:
-    st.metric("Total Submissions", stats["total_reports"])
+    st.metric(t("kpi_total_submissions", lang_code), stats["total_reports"])
 with kpi2:
-    st.metric("Pending Review", stats["pending_verification"], delta=f"{stats['pending_verification']} queue", delta_color="inverse")
+    st.metric(t("kpi_pending_review", lang_code), stats["pending_verification"], delta=f"{stats['pending_verification']} queue", delta_color="inverse")
 with kpi3:
-    st.metric("Confirmed Ground-Truth", stats["confirmed"])
+    st.metric(t("kpi_confirmed", lang_code), stats["confirmed"])
 with kpi4:
-    st.metric("Corrected by Officer", stats["corrected"])
+    st.metric(t("kpi_corrected", lang_code), stats["corrected"])
 with kpi5:
-    st.metric("Uncertain Flags (<60%)", stats["uncertain"], delta="flagged for visit", delta_color="inverse")
+    st.metric(t("kpi_uncertain", lang_code), stats["uncertain"], delta="<60% gate", delta_color="inverse")
 
 st.divider()
 
@@ -112,7 +125,7 @@ if df_reports.empty:
     st.stop()
 
 # Spatial Epidemiological Map
-st.subheader("🗺️ Maharashtra Disease Surveillance Map & Hotspot Heatmap")
+st.subheader(t("map_section_title", lang_code))
 map_col_opts1, map_col_opts2 = st.columns([1, 3])
 
 with map_col_opts1:
@@ -122,14 +135,15 @@ with map_col_opts1:
         index=0,
     )
     filter_crop_map = st.multiselect(
-        "Filter by Crop:",
+        t("filter_crop_label", lang_code),
         options=["tomato", "cotton", "onion"],
         default=["tomato", "cotton", "onion"],
+        format_func=lambda x: {"tomato": "🍅 Tomato", "cotton": "🌿 Cotton", "onion": "🧅 Onion"}.get(x, x),
     )
 
 map_df = df_reports[df_reports["crop"].isin(filter_crop_map)]
 
-# Initialize Folium Map centered on Maharashtra using public OpenStreetMap tiles (no API key required)
+# Initialize Folium Map centered on Maharashtra using public OpenStreetMap tiles
 try:
     m = folium.Map(
         location=[19.25, 75.75],
@@ -163,23 +177,24 @@ try:
             if r["expert_label"]:
                 status_badge += f" (Corrected: {r['expert_label']})"
 
+            localized_disease = translations.get_disease_name(r["predicted_disease"], lang_code)
             popup_html = f"""
-            <div style="font-family: sans-serif; font-size: 12px; width: 220px;">
+            <div style="font-family: sans-serif; font-size: 12px; width: 230px;">
                 <h4 style="margin: 0 0 6px 0; color: #1e3a8a;">Report #{r['id']} ({r['crop'].upper()})</h4>
-                <b>Diagnosis:</b> {model.DISEASE_DISPLAY_NAMES.get(r['predicted_disease'], r['predicted_disease'])}<br>
+                <b>Diagnosis:</b> {localized_disease}<br>
                 <b>Confidence:</b> {r['confidence']*100:.1f}%<br>
                 <b>Weather Risk:</b> <span style="color: {'red' if r['weather_risk']=='High' else 'green'}; font-weight: bold;">{r['weather_risk']}</span><br>
                 <b>Location:</b> {r['location_name']}<br>
                 <b>Date:</b> {r['timestamp']}<br>
                 {status_badge}<br>
-                {'<span style="color: #b91c1c; font-weight: bold;">⚠️ Low Confidence Flag</span>' if r['is_uncertain'] else ''}
+                {'<span style="color: #b91c1c; font-weight: bold;">⚠️ Low Confidence Flag (<60%)</span>' if r['is_uncertain'] else ''}
             </div>
             """
             folium.CircleMarker(
                 location=[r["latitude"], r["longitude"]],
                 radius=7,
-                popup=folium.Popup(popup_html, max_width=250),
-                tooltip=f"#{r['id']} - {r['crop'].title()} ({r['predicted_disease']})",
+                popup=folium.Popup(popup_html, max_width=260),
+                tooltip=f"#{r['id']} - {r['crop'].title()} ({localized_disease})",
                 color=color,
                 fill=True,
                 fill_color=color,
@@ -201,14 +216,14 @@ except Exception as map_err:
 st.divider()
 
 # Disease Analytics & Frequency Charts
-st.subheader("📊 Disease Distribution & Prevalence Analytics")
+st.subheader(t("analytics_title", lang_code))
 chart_c1, chart_c2 = st.columns(2)
 
 with chart_c1:
     disease_counts = df_reports["predicted_disease"].value_counts().reset_index()
     disease_counts.columns = ["Disease", "Report Count"]
     disease_counts["Display Name"] = disease_counts["Disease"].map(
-        lambda x: model.DISEASE_DISPLAY_NAMES.get(x, x.replace("_", " ").title())
+        lambda x: translations.get_disease_name(x, lang_code)
     )
     fig_bar = px.bar(
         disease_counts,
@@ -239,14 +254,14 @@ with chart_c2:
 st.divider()
 
 # Recent Reports Table
-st.subheader("📋 Recent Field Submissions Audit Log")
+st.subheader(t("reports_table_title", lang_code))
 
 # Table filters
 f_col1, f_col2, f_col3 = st.columns(3)
 with f_col1:
-    status_filter = st.selectbox("Filter Verification Status:", ["All", "Pending", "Confirmed", "Corrected"])
+    status_filter = st.selectbox(t("filter_status_label", lang_code), ["All", "Pending", "Confirmed", "Corrected"])
 with f_col2:
-    crop_filter = st.selectbox("Filter Crop:", ["All", "Tomato", "Cotton", "Onion"])
+    crop_filter = st.selectbox(t("filter_crop_label", lang_code), ["All", "Tomato", "Cotton", "Onion"])
 with f_col3:
     uncertain_filter = st.selectbox("Confidence Filter:", ["All", "Uncertain Only (<60%)", "Confident (>=60%)"])
 
@@ -273,7 +288,7 @@ st.dataframe(
 # Export to CSV
 csv_data = filtered_df.to_csv(index=False).encode("utf-8")
 st.download_button(
-    "📥 Export Filtered Submissions to CSV",
+    "📥 Export Submissions to CSV",
     data=csv_data,
     file_name="cropguard_submissions_export.csv",
     mime="text/csv",
@@ -282,17 +297,17 @@ st.download_button(
 st.divider()
 
 # Human-in-the-Loop "Confirm / Correct Label" Control
-st.subheader("✍️ Human-in-the-Loop: Confirm / Correct Diagnostic Label")
+st.subheader(t("audit_panel_title", lang_code))
 st.markdown(
     "Agriculture Officers and KVK scientists can verify diagnoses or re-label ambiguous cases to improve the active learning retraining loop."
 )
 
 if not filtered_df.empty:
     report_options = {
-        f"Report #{r['id']} | {r['crop'].title()} | {r['predicted_disease']} ({r['confidence']*100:.1f}%) | Status: {r['expert_status']}": r["id"]
+        f"Report #{r['id']} | {r['crop'].title()} | {translations.get_disease_name(r['predicted_disease'], lang_code)} ({r['confidence']*100:.1f}%) | Status: {r['expert_status']}": r["id"]
         for _, r in filtered_df.iterrows()
     }
-    selected_option_label = st.selectbox("Select Report to Inspect & Verify:", options=list(report_options.keys()))
+    selected_option_label = st.selectbox(t("audit_select_report", lang_code), options=list(report_options.keys()))
     selected_id = report_options[selected_option_label]
     target_row = df_reports[df_reports["id"] == selected_id].iloc[0]
 
@@ -304,11 +319,11 @@ if not filtered_df.empty:
                 <div style="display: flex; gap: 24px; flex-wrap: wrap;">
                     <div><strong>Timestamp:</strong> {target_row['timestamp']}</div>
                     <div><strong>Crop:</strong> {target_row['crop'].title()}</div>
-                    <div><strong>AI Diagnosis:</strong> <code>{target_row['predicted_disease']}</code></div>
+                    <div><strong>Diagnosis:</strong> <code>{translations.get_disease_name(target_row['predicted_disease'], lang_code)}</code></div>
                     <div><strong>Confidence:</strong> {target_row['confidence']*100:.1f}%</div>
                     <div><strong>Location:</strong> {target_row['location_name']} ({target_row['latitude']}, {target_row['longitude']})</div>
                     <div><strong>Weather Risk:</strong> {target_row['weather_risk']}</div>
-                    <div><strong>Current Expert Status:</strong> {target_row['expert_status']}</div>
+                    <div><strong>Status:</strong> {target_row['expert_status']}</div>
                 </div>
             </div>
             """,
@@ -319,7 +334,7 @@ if not filtered_df.empty:
         with col_act1:
             verification_action = st.radio(
                 "Officer Action:",
-                options=["Confirm AI Diagnosis as Correct", "Correct Disease Label (Disagrees with AI)"],
+                options=["Confirm Diagnosis as Correct", "Correct Disease Label (Disagrees with Model)"],
                 index=0 if target_row["expert_status"] != "Corrected" else 1,
             )
 
@@ -329,9 +344,9 @@ if not filtered_df.empty:
 
             if "Correct Disease Label" in verification_action:
                 chosen_expert_label = st.selectbox(
-                    "Select True Clinical/Field Pathogen Label:",
+                    t("audit_expert_diagnosis", lang_code),
                     options=all_possible_diseases,
-                    format_func=lambda x: model.DISEASE_DISPLAY_NAMES.get(x, x),
+                    format_func=lambda x: translations.get_disease_name(x, lang_code),
                     index=current_idx,
                 )
                 final_status = "Corrected"
@@ -340,9 +355,9 @@ if not filtered_df.empty:
                 final_status = "Confirmed"
 
         expert_notes = st.text_area(
-            "Officer Agronomic Notes & Ground-Truth Justification:",
+            t("audit_notes", lang_code),
             value=target_row["expert_notes"] or "",
-            placeholder="e.g. Field inspection by AO on 28-Oct confirmed concentric rings on lower leaves; Mancozeb trial advised.",
+            placeholder="e.g. Field inspection confirmed early blight concentric rings on lower leaves; sanitary pruning advised.",
         )
 
         if st.button("💾 Save Expert Verification", type="primary"):

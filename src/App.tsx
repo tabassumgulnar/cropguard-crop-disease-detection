@@ -142,6 +142,14 @@ export default function App() {
     setOfficerNote('');
   };
 
+  const UI_LABELS = {
+    overview: { en: 'Home Dashboard', hi: 'मुख्य डैशबोर्ड', mr: 'मुख्य डॅशबोर्ड' },
+    farmer: { en: 'Farmer Diagnostic Portal', hi: 'किसान निदान पोर्टल', mr: 'शेतकरी निदान पोर्टल' },
+    officer: { en: 'Officer Surveillance Hub', hi: 'अधिकारी निगरानी हब', mr: 'अधिकारी सनियंत्रण केंद्र' },
+    advisory: { en: 'IPM Advisory Catalog', hi: 'आईपीएम सलाह कैटलॉग', mr: 'आयपीएम सल्ला मार्गदर्शिका' },
+    terminal: { en: 'Streamlit CLI Guide', hi: 'स्ट्रीमलिट गाइड', mr: 'स्ट्रीमलिट मार्गदर्शक' },
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans">
       {/* Top Header Banner */}
@@ -203,7 +211,7 @@ export default function App() {
                 : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
-            <Activity className="w-4 h-4 text-emerald-600" /> Home Dashboard
+            <Activity className="w-4 h-4 text-emerald-600" /> {UI_LABELS.overview[selectedLang]}
           </button>
           <button
             onClick={() => setActiveTab('farmer')}
@@ -213,7 +221,7 @@ export default function App() {
                 : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
-            <Sprout className="w-4 h-4 text-emerald-600" /> Farmer Diagnostic Portal
+            <Sprout className="w-4 h-4 text-emerald-600" /> {UI_LABELS.farmer[selectedLang]}
           </button>
           <button
             onClick={() => setActiveTab('officer')}
@@ -223,7 +231,7 @@ export default function App() {
                 : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
-            <ShieldAlert className="w-4 h-4 text-blue-600" /> Officer Surveillance Hub
+            <ShieldAlert className="w-4 h-4 text-blue-600" /> {UI_LABELS.officer[selectedLang]}
           </button>
           <button
             onClick={() => setActiveTab('advisory')}
@@ -233,7 +241,7 @@ export default function App() {
                 : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
-            <FileText className="w-4 h-4 text-purple-600" /> IPM Advisory Catalog
+            <FileText className="w-4 h-4 text-purple-600" /> {UI_LABELS.advisory[selectedLang]}
           </button>
           <button
             onClick={() => setActiveTab('terminal')}
@@ -243,7 +251,7 @@ export default function App() {
                 : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
-            <Terminal className="w-4 h-4 text-slate-700" /> Streamlit CLI Guide
+            <Terminal className="w-4 h-4 text-slate-700" /> {UI_LABELS.terminal[selectedLang]}
           </button>
         </div>
       </nav>

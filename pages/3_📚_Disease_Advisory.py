@@ -2,17 +2,24 @@
 CropGuard Trilingual Integrated Pest Management (IPM) Advisory Catalog
 Comprehensive reference for 10+ diseases across Tomato, Cotton, and Onion.
 Includes Cultural, Biological, Chemical (Last Resort), and Safety Notes in English, Hindi, and Marathi.
+Synchronized with persistent session state language switching.
 """
 
 import os
 import json
 import streamlit as st
+import translations
+from translations import t
 
 st.set_page_config(
     page_title="IPM Advisory Catalog | CropGuard",
     page_icon="logo.jpeg",
     layout="wide",
 )
+
+# Initialize language session state
+translations.init_language_state()
+lang_code = translations.get_current_language()
 
 st.markdown(
     """
@@ -78,30 +85,34 @@ diseases_dict = data.get("diseases", {})
 # Clean Organized Navigation Sidebar
 with st.sidebar:
     st.image("logo.jpeg", use_container_width=True)
-    st.markdown("### 📍 Navigation")
-    st.page_link("app.py", label="Home Dashboard", icon="🏠")
-    st.page_link("pages/1_🌾_Farmer_Diagnosis.py", label="Farmer Diagnostic Portal", icon="🌾")
-    st.page_link("pages/2_🛡️_Officer_Dashboard.py", label="Officer GIS Dashboard", icon="🛡️")
-    st.page_link("pages/3_📚_Disease_Advisory.py", label="Trilingual IPM Catalog", icon="📚")
+    
+    # Persistent Language Selector
+    lang_code = translations.render_language_selector(sidebar=True, key_prefix="advisory_sidebar")
+
+    st.markdown(f"### 📍 {t('nav_heading', lang_code)}")
+    st.page_link("app.py", label=t("nav_home", lang_code), icon="🏠")
+    st.page_link("pages/1_🌾_Farmer_Diagnosis.py", label=t("nav_farmer", lang_code), icon="🌾")
+    st.page_link("pages/2_🛡️_Officer_Dashboard.py", label=t("nav_officer", lang_code), icon="🛡️")
+    st.page_link("pages/3_📚_Disease_Advisory.py", label=t("nav_advisory", lang_code), icon="📚")
     st.divider()
     st.markdown("### 📖 IPM Philosophy")
     st.caption("1. Cultural Sanity\n2. Biological Defense\n3. Chemical Strictly as Last Resort\n4. Zero Invented Dosages")
     st.divider()
-    st.caption("CropGuard • Open-Source Agro-Informatics")
+    st.caption(t("footer_credit", lang_code))
 
 st.markdown(
-    """
+    f"""
     <div class="advisory-header">
-        <h2>📚 Trilingual IPM Disease & Pest Advisory Catalog</h2>
+        <h2>{t('advisory_banner_title', lang_code)}</h2>
         <p style="margin: 6px 0 0 0; opacity: 0.95; font-size: 1.05rem;">
-            Integrated Pest Management (IPM) Protocols • Cultural • Biological • Chemical-Last • Safety
+            {t('advisory_banner_subtitle', lang_code)}
         </p>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# Overarching IPM Framework (Avoids repeating the same warning on every individual card)
+# Overarching IPM Framework
 st.markdown(
     """
     <div class="ipm-framework-box">
@@ -120,26 +131,31 @@ st.markdown(
 # Filters Row
 c1, c2, c3 = st.columns([1.5, 1.5, 2])
 with c1:
-    lang_choice = st.selectbox(
-        "Select Language / भाषा चुनें / भाषा निवडा:",
-        options=["English (en)", "हिन्दी (hi)", "मराठी (mr)"],
-        index=0,
+    lang_labels = ["English", "हिन्दी (Hindi)", "मराठी (Marathi)"]
+    lang_codes = ["en", "hi", "mr"]
+    code_to_idx = {"en": 0, "hi": 1, "mr": 2}
+    current_idx = code_to_idx.get(lang_code, 0)
+    chosen_label = st.selectbox(
+        "🌐 Language / भाषा / भाषा निवडा:",
+        options=lang_labels,
+        index=current_idx,
+        key="advisory_top_lang",
     )
-    lang_code = "en"
-    if "हिन्दी" in lang_choice:
-        lang_code = "hi"
-    elif "मराठी" in lang_choice:
-        lang_code = "mr"
+    new_lang = lang_codes[lang_labels.index(chosen_label)]
+    if new_lang != lang_code:
+        translations.set_current_language(new_lang)
+        st.rerun()
 
 with c2:
     crop_filter = st.selectbox(
-        "Filter by Crop:",
+        t("filter_crop_label", lang_code),
         options=["All Crops", "Tomato", "Cotton", "Onion"],
+        format_func=lambda x: {"All Crops": t("all_crops", lang_code), "Tomato": "🍅 Tomato", "Cotton": "🌿 Cotton", "Onion": "🧅 Onion"}.get(x, x),
         index=0,
     )
 
 with c3:
-    search_query = st.text_input("🔎 Search by symptom, disease, or pathogen name:", placeholder="e.g. blight, curl, Alternaria")
+    search_query = st.text_input(t("search_advisory_label", lang_code), placeholder="e.g. blight, curl, Alternaria")
 
 # Filter logic
 filtered_keys = []
@@ -164,14 +180,15 @@ for d_key in filtered_keys:
     crop = d_info.get("crop", "crop").title()
     sci_name = d_info.get("scientific_name", "")
     lang_data = d_info.get(lang_code, d_info.get("en", {}))
+    disease_localized_name = translations.get_disease_name(d_key, lang_code)
 
     crop_badge = "🍅 Tomato" if crop == "Tomato" else ("🌿 Cotton" if crop == "Cotton" else "🧅 Onion")
 
-    with st.expander(f"{crop_badge} — {lang_data.get('name', d_key)}", expanded=(len(filtered_keys) <= 3)):
+    with st.expander(f"{crop_badge} — {disease_localized_name}", expanded=(len(filtered_keys) <= 3)):
         st.markdown(
             f"""
             <div class="disease-banner">
-                <h3 style="margin: 0 0 6px 0; color: #064e3b; font-size: 1.25rem;">{lang_data.get('name')}</h3>
+                <h3 style="margin: 0 0 6px 0; color: #064e3b; font-size: 1.25rem;">{disease_localized_name}</h3>
                 <p style="margin: 0 0 6px 0; color: #047857; font-size: 0.92rem;">
                     <strong>Pathogen:</strong> {lang_data.get('pathogen', '')} &nbsp;|&nbsp; <em>{sci_name}</em>
                 </p>
@@ -185,8 +202,8 @@ for d_key in filtered_keys:
 
         # Clear separation between Preventive Measures and Monitored Treatments
         tab_prev, tab_treat = st.tabs([
-            "🛡️ Part I: Preventive Measures (Cultural & Biological)",
-            "🧪 Part II: Monitored Treatment & Remediation (Last Resort)",
+            t("part1_tab", lang_code),
+            t("part2_tab", lang_code),
         ])
 
         with tab_prev:
@@ -205,6 +222,7 @@ for d_key in filtered_keys:
             col_ch, col_s = st.columns(2)
             with col_ch:
                 st.markdown("##### 🧪 1. Chemical Interventions (Strictly After ETL Breached)")
+                st.warning(t("chem_warning", lang_code))
                 for item in lang_data.get("chemical_last", []):
                     st.markdown(f"- {item}")
 
@@ -212,6 +230,7 @@ for d_key in filtered_keys:
                 st.markdown("##### 🦺 2. Operator Safety, PPE & Pre-Harvest Intervals (PHI)")
                 for item in lang_data.get("safety_notes", []):
                     st.markdown(f"- {item}")
+                st.markdown(f"- **{t('phi_note', lang_code)}**")
 
 # Regulatory Notice
 disclaimer_body = disclaimer_dict.get(lang_code, disclaimer_dict.get("en", ""))

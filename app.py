@@ -2,11 +2,14 @@
 CropGuard: Early Detection of Crop Diseases & Pests
 CropGuard: an open-source crop disease and pest detection tool
 Main Application Entrypoint & System Hub
+Includes trilingual localization (English, Hindi, Marathi) with persistent session state.
 """
 
 import streamlit as st
 import db
 import model
+import translations
+from translations import t
 
 # Configure page metadata
 st.set_page_config(
@@ -16,8 +19,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Initialize database schema
+# Initialize database schema and language state
 db.init_db()
+translations.init_language_state()
+current_lang = translations.get_current_language()
 
 # Custom CSS for modern, high-contrast, production-grade agricultural styling
 st.markdown(
@@ -40,14 +45,14 @@ st.markdown(
     }
     .main-header h1 {
         color: #ffffff !important;
-        font-size: 2.3rem;
+        font-size: 2.1rem;
         font-weight: 800;
         margin: 0;
         letter-spacing: -0.5px;
     }
     .main-header p {
         color: #ecfdf5 !important;
-        font-size: 1.05rem;
+        font-size: 1.02rem;
         margin-top: 8px;
         margin-bottom: 0;
         opacity: 0.95;
@@ -108,7 +113,7 @@ st.markdown(
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        min-height: 240px;
+        min-height: 250px;
         margin-bottom: 12px;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
@@ -127,7 +132,7 @@ st.markdown(
     }
     .feature-card h4 {
         color: #0f172a !important;
-        font-size: 1.2rem;
+        font-size: 1.18rem;
         font-weight: 700;
         margin: 0 0 8px 0;
         display: flex;
@@ -188,7 +193,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Sidebar Navigation and System Info
+# Sidebar Navigation and Language Switcher
 with st.sidebar:
     st.image(
         "logo.jpeg",
@@ -196,21 +201,24 @@ with st.sidebar:
         use_container_width=True,
     )
     
-    st.markdown("### 📍 Navigation")
-    st.page_link("app.py", label="Home Dashboard", icon="🏠")
-    st.page_link("pages/1_🌾_Farmer_Diagnosis.py", label="Farmer Diagnostic Portal", icon="🌾")
-    st.page_link("pages/2_🛡️_Officer_Dashboard.py", label="Officer GIS Dashboard", icon="🛡️")
-    st.page_link("pages/3_📚_Disease_Advisory.py", label="Trilingual IPM Catalog", icon="📚")
+    # Persistent Language Selector
+    current_lang = translations.render_language_selector(sidebar=True, key_prefix="home")
+
+    st.markdown(f"### 📍 {t('nav_heading', current_lang)}")
+    st.page_link("app.py", label=t("nav_home", current_lang), icon="🏠")
+    st.page_link("pages/1_🌾_Farmer_Diagnosis.py", label=t("nav_farmer", current_lang), icon="🌾")
+    st.page_link("pages/2_🛡️_Officer_Dashboard.py", label=t("nav_officer", current_lang), icon="🛡️")
+    st.page_link("pages/3_📚_Disease_Advisory.py", label=t("nav_advisory", current_lang), icon="📚")
     
     st.divider()
 
     # System Status
-    st.markdown("### ⚙️ System Status")
+    st.markdown(f"### ⚙️ {t('system_status', current_lang)}")
     engine_status = model.get_model_engine_status()
     st.markdown(
         f"""
         <div class="status-panel">
-            <div style="font-size: 0.8rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Vision Engine</div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">{t('vision_engine', current_lang)}</div>
             <div style="font-size: 0.82rem; font-weight: 600; color: {'#059669' if engine_status['is_neural_model_loaded'] else '#d97706'};">
                 {engine_status['status_badge']}
             </div>
@@ -233,12 +241,12 @@ with st.sidebar:
     st.divider()
 
     # Database Demo Actions
-    st.markdown("### ⚡ Database Operations")
+    st.markdown(f"### ⚡ {t('db_operations', current_lang)}")
     col_d1, col_d2 = st.columns(2)
     with col_d1:
         if st.button("📥 Seed Demo", use_container_width=True, help="Populate 32 Maharashtra district reports"):
             count = db.load_demo_data()
-            st.success(f"Loaded {count} demo records.")
+            st.success(f"Loaded {count} records.")
             st.rerun()
     with col_d2:
         if st.button("🗑️ Reset DB", use_container_width=True, help="Clear all records in SQLite"):
@@ -252,11 +260,11 @@ with col_h1:
     st.image("logo.jpeg", use_container_width=True)
 with col_h2:
     st.markdown(
-        """
+        f"""
         <div class="main-header" style="margin-bottom: 0;">
-            <span class="badge-tag">Open-Source Agro-Informatics Platform</span>
-            <h1>🌱 CropGuard: Early Crop Disease & Pest Detection</h1>
-            <p>AI-Powered Plant Pathology, Open-Meteo Weather Epidemiology, and Trilingual Integrated Pest Management (IPM)</p>
+            <span class="badge-tag">{t('home_tag', current_lang)}</span>
+            <h1>{t('home_title', current_lang)}</h1>
+            <p>{t('home_subtitle', current_lang)}</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -267,8 +275,8 @@ st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
 stats = db.get_summary_stats()
 
 # Statistics Section with transparent attribution
-st.markdown("### 📊 Surveillance Database Metrics")
-st.caption("Live counts from local SQLite storage (`cropguard.db`). Reflects field entries and pre-seeded Maharashtra demo reports.")
+st.markdown(f"### 📊 {t('metrics_title', current_lang)}")
+st.caption(t("metrics_caption", current_lang))
 
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
@@ -276,8 +284,8 @@ with c1:
         f"""
         <div class="metric-card">
             <div class="metric-val">{stats["total_reports"]}</div>
-            <div class="metric-lbl">Total Reports</div>
-            <div class="metric-sub">Stored in DB</div>
+            <div class="metric-lbl">{t("metric_total_reports", current_lang)}</div>
+            <div class="metric-sub">{t("metric_total_sub", current_lang)}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -287,8 +295,8 @@ with c2:
         f"""
         <div class="metric-card">
             <div class="metric-val" style="color: #dc2626;">{stats["pending_verification"]}</div>
-            <div class="metric-lbl">Pending Review</div>
-            <div class="metric-sub">Awaiting Officer</div>
+            <div class="metric-lbl">{t("metric_pending", current_lang)}</div>
+            <div class="metric-sub">{t("metric_pending_sub", current_lang)}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -298,8 +306,8 @@ with c3:
         f"""
         <div class="metric-card">
             <div class="metric-val" style="color: #059669;">{stats["confirmed"]}</div>
-            <div class="metric-lbl">Confirmed Cases</div>
-            <div class="metric-sub">Officer Validated</div>
+            <div class="metric-lbl">{t("metric_confirmed", current_lang)}</div>
+            <div class="metric-sub">{t("metric_confirmed_sub", current_lang)}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -309,8 +317,8 @@ with c4:
         f"""
         <div class="metric-card">
             <div class="metric-val" style="color: #d97706;">{stats["corrected"]}</div>
-            <div class="metric-lbl">Expert Corrected</div>
-            <div class="metric-sub">Active Learning</div>
+            <div class="metric-lbl">{t("metric_corrected", current_lang)}</div>
+            <div class="metric-sub">{t("metric_corrected_sub", current_lang)}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -320,8 +328,8 @@ with c5:
         f"""
         <div class="metric-card">
             <div class="metric-val" style="color: #ea580c;">{stats["uncertain"]}</div>
-            <div class="metric-lbl">Uncertain (&lt;60%)</div>
-            <div class="metric-sub">Safety Safeguard</div>
+            <div class="metric-lbl">{t("metric_uncertain", current_lang)}</div>
+            <div class="metric-sub">{t("metric_uncertain_sub", current_lang)}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -329,20 +337,20 @@ with c5:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Navigation Cards Section - Fixed blank appearance, clear contrast, icons, and direct functional buttons
-st.markdown("### 🚀 CropGuard Core Modules")
-st.caption("Select a dedicated module to perform leaf diagnosis, monitor regional spatial outbreaks, or browse trilingual advisories.")
+# Navigation Cards Section
+st.markdown(f"### 🚀 {t('core_modules_title', current_lang)}")
+st.caption(t("core_modules_caption", current_lang))
 
 col_nav1, col_nav2, col_nav3 = st.columns(3)
 
 with col_nav1:
     st.markdown(
-        """
+        f"""
         <div class="feature-card feature-card-farmer">
             <div>
-                <span class="card-meta">Farmer Diagnostic Edge</span>
-                <h4>🌾 1. Farmer Diagnostic Portal</h4>
-                <p>Upload or take a photo of infected leaves for instant classification. Features top-3 probability distribution, live Open-Meteo weather risk alerts, and trilingual IPM recommendations.</p>
+                <span class="card-meta">{t('card_farmer_badge', current_lang)}</span>
+                <h4>{t('card_farmer_title', current_lang)}</h4>
+                <p>{t('card_farmer_desc', current_lang)}</p>
             </div>
             <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">
                 ✓ Strict &lt;60% safety gate &nbsp;•&nbsp; Tomato, Cotton, Onion
@@ -353,19 +361,19 @@ with col_nav1:
     )
     st.page_link(
         "pages/1_🌾_Farmer_Diagnosis.py",
-        label="Open Farmer Diagnostic Portal →",
+        label=t("card_farmer_btn", current_lang),
         icon="🌾",
         use_container_width=True,
     )
 
 with col_nav2:
     st.markdown(
-        """
+        f"""
         <div class="feature-card feature-card-officer">
             <div>
-                <span class="card-meta card-meta-blue">Surveillance & GIS</span>
-                <h4>🛡️ 2. Officer Surveillance Dashboard</h4>
-                <p>Interactive Folium GIS map with disease incidence pins, regional epidemic heatmaps across Maharashtra, disease frequency charts, and a human-in-the-loop audit tool to verify or correct diagnoses.</p>
+                <span class="card-meta card-meta-blue">{t('card_officer_badge', current_lang)}</span>
+                <h4>{t('card_officer_title', current_lang)}</h4>
+                <p>{t('card_officer_desc', current_lang)}</p>
             </div>
             <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">
                 ✓ Active learning loop &nbsp;•&nbsp; Export CSV surveillance logs
@@ -376,19 +384,19 @@ with col_nav2:
     )
     st.page_link(
         "pages/2_🛡️_Officer_Dashboard.py",
-        label="Open Officer Surveillance Dashboard →",
+        label=t("card_officer_btn", current_lang),
         icon="🛡️",
         use_container_width=True,
     )
 
 with col_nav3:
     st.markdown(
-        """
+        f"""
         <div class="feature-card feature-card-advisory">
             <div>
-                <span class="card-meta card-meta-purple">Knowledge Base</span>
-                <h4>📚 3. Trilingual IPM Advisory Catalog</h4>
-                <p>Searchable agricultural knowledge base covering 11 foliar pathogens in English, हिन्दी (Hindi), and मराठी (Marathi). Follows ICAR and KVK guidance prioritizing Cultural and Biological controls over chemicals.</p>
+                <span class="card-meta card-meta-purple">{t('card_advisory_badge', current_lang)}</span>
+                <h4>{t('card_advisory_title', current_lang)}</h4>
+                <p>{t('card_advisory_desc', current_lang)}</p>
             </div>
             <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">
                 ✓ Zero invented dosages &nbsp;•&nbsp; Pre-Harvest Intervals (PHI)
@@ -399,7 +407,7 @@ with col_nav3:
     )
     st.page_link(
         "pages/3_📚_Disease_Advisory.py",
-        label="Browse Trilingual IPM Catalog →",
+        label=t("card_advisory_btn", current_lang),
         icon="📚",
         use_container_width=True,
     )
@@ -422,8 +430,8 @@ with arch_c1:
                                             ▼
                     ┌───────────────────────────────────────────────┐
                     │ Confidence Safeguard Check:                   │
-                    │  - If Conf < 60% ──▶ "Uncertain – Consult AO" │
-                    │  - If Conf ≥ 60% ──▶ Trilingual IPM Advisory  │
+                    │  - If Conf < 60% ──▶ Actionable Low-Conf Tips │
+                    │  - If Conf ≥ 60% ──▶ Possible Diagnosis + IPM │
                     └───────────────────────────────────────────────┘
                                             │
                                             ▼
