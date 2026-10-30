@@ -538,27 +538,39 @@ export default function App() {
 
                 {/* Right: Diagnosis & Safeguard */}
                 <div className="lg:col-span-7 space-y-4">
+                  <div className="bg-slate-100/80 border border-slate-200 rounded-xl p-3 text-xs text-slate-700">
+                    ℹ️ <strong>Preliminary Screening Notice:</strong> Predictions are automated screening estimates to assist field scouting, not certified laboratory or molecular tests.
+                  </div>
+
                   {sampleData.is_uncertain ? (
-                    <div className="bg-red-50 border-2 border-red-300 rounded-xl p-5 text-red-900">
-                      <div className="flex items-center gap-2 mb-2 font-bold text-base text-red-700">
-                        <AlertTriangle className="w-5 h-5 text-red-600" />
-                        ⚠️ Uncertain – please consult an agriculture officer
+                    <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-5 text-amber-950">
+                      <div className="flex items-center gap-2 mb-2 font-bold text-base text-amber-900">
+                        <AlertTriangle className="w-5 h-5 text-amber-600" />
+                        Low-Confidence Visual Match ({Math.round(sampleData.confidence * 100)}%) — Additional Observations Recommended
                       </div>
-                      <p className="text-xs sm:text-sm text-red-800 leading-relaxed">
-                        Top confidence score ({Math.round(sampleData.confidence * 100)}%) is strictly below the 60% safety threshold. CropGuard suppresses prescriptive chemical recommendations to prevent accidental pesticide misapplication.
+                      <p className="text-xs sm:text-sm text-amber-800 leading-relaxed mb-3">
+                        Confidence is below the strict 60% reliability gate. Symptoms may overlap with nutrient deficiency or secondary molds.
                       </p>
+                      <div className="bg-white p-3 rounded-lg border border-amber-200 text-xs space-y-1.5 text-amber-900">
+                        <strong>📸 Photo improvement tips:</strong>
+                        <ul className="list-disc pl-4 space-y-0.5 text-slate-700">
+                          <li>Focus sharply on active lesion margins where green meets brown.</li>
+                          <li>Flip the leaf to check the underside for fungal sporulation or insect pests.</li>
+                          <li>Shoot in diffused daytime light without flash glare or deep shadows.</li>
+                        </ul>
+                      </div>
                     </div>
                   ) : (
                     <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-bold text-emerald-800 uppercase">Top Prediction</span>
+                        <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">Candidate Match</span>
                         <span className="text-xs font-black text-emerald-900 bg-emerald-200/60 px-2.5 py-0.5 rounded-full">
-                          {Math.round(sampleData.confidence * 100)}% Confidence
+                          {Math.round(sampleData.confidence * 100)}% Match Confidence
                         </span>
                       </div>
                       <h4 className="text-lg font-black text-emerald-950">{sampleData.disease}</h4>
                       <p className="text-xs text-emerald-700 mt-1">
-                        High-confidence match confirmed. Safe Integrated Pest Management guidelines unlocked below.
+                        High-confidence screening match. Structured 5-step management protocol available below.
                       </p>
                     </div>
                   )}
@@ -586,24 +598,53 @@ export default function App() {
                     ))}
                   </div>
 
-                  {/* Recommendation Preview */}
-                  {!sampleData.is_uncertain && (
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-                      <h5 className="text-xs font-bold text-slate-800 uppercase mb-2 flex items-center gap-1.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Integrated Pest Management (IPM) Steps
-                      </h5>
-                      <div className="grid grid-cols-2 gap-2 text-xs">
-                        <div className="bg-white p-2.5 rounded-lg border border-slate-200">
-                          <span className="font-bold text-emerald-800 block mb-1">Cultural</span>
-                          <span className="text-slate-600">Remove lower infected leaves; drip irrigate to keep foliage dry.</span>
-                        </div>
-                        <div className="bg-white p-2.5 rounded-lg border border-slate-200">
-                          <span className="font-bold text-blue-800 block mb-1">Biological</span>
-                          <span className="text-slate-600">Apply Trichoderma harzianum or Bacillus subtilis to root zone.</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  {/* 5 Structured Protocol Accordion */}
+                  <div className="space-y-2 text-xs">
+                    <details className="bg-slate-50 border border-slate-200 rounded-xl p-3" open>
+                      <summary className="font-bold text-slate-800 cursor-pointer">
+                        🔍 A. Possible Disease & Observed Symptoms
+                      </summary>
+                      <p className="mt-2 text-slate-600">
+                        {sampleData.disease} on {sampleData.crop}. Concentric rings, water-soaked margins, or viral curling depending on pathogen. Weather risk currently at {sampleData.weather.risk}.
+                      </p>
+                    </details>
+
+                    <details className="bg-slate-50 border border-slate-200 rounded-xl p-3" open>
+                      <summary className="font-bold text-slate-800 cursor-pointer">
+                        ⚡ B. Immediate Steps (First 24–48 Hours)
+                      </summary>
+                      <p className="mt-2 text-slate-600">
+                        Prune and destroy infected lower leaves (never compost). Sterilize pruning shears with 70% alcohol. Halt overhead sprinkler irrigation immediately.
+                      </p>
+                    </details>
+
+                    <details className="bg-slate-50 border border-slate-200 rounded-xl p-3">
+                      <summary className="font-bold text-slate-800 cursor-pointer">
+                        🛡️ C. Disease Prevention Methods
+                      </summary>
+                      <p className="mt-2 text-slate-600">
+                        Practice 2-year crop rotation with non-hosts (cereals/pulses). Plant certified disease-free seeds. Maintain recommended spacing for canopy aeration.
+                      </p>
+                    </details>
+
+                    <details className="bg-slate-50 border border-slate-200 rounded-xl p-3">
+                      <summary className="font-bold text-slate-800 cursor-pointer">
+                        💧 D. Crop Hygiene, Watering & Drainage
+                      </summary>
+                      <p className="mt-2 text-slate-600">
+                        Drip irrigate at root level early in the morning. Build raised beds (15–20 cm) and clear field drainage furrows to prevent waterlogged crowns.
+                      </p>
+                    </details>
+
+                    <details className="bg-slate-50 border border-slate-200 rounded-xl p-3">
+                      <summary className="font-bold text-slate-800 cursor-pointer">
+                        🏛️ E. When to Seek Agricultural Expert Confirmation
+                      </summary>
+                      <p className="mt-2 text-slate-600">
+                        Contact local KVK or Agriculture Officer if symptoms spread to &gt;15–20% of the plot within 72 hours, stem cankers form, or plants wilt despite moist soil.
+                      </p>
+                    </details>
+                  </div>
                 </div>
               </div>
             </div>

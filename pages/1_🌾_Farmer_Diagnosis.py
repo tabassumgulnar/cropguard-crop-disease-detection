@@ -338,107 +338,216 @@ if btn_analyze or (image_to_process is not None and "last_analyzed_img" in st.se
         image_name=image_name,
     )
 
-    st.subheader("🎯 Step 3: Diagnostic Results")
+    st.subheader("🎯 Step 3: Diagnostic Screening Results")
 
-    # Display Top-3 Predictions Bar
-    st.markdown("##### 📊 Top-3 Candidate Predictions (Confidence Breakdown):")
+    # Clear explanation that predictions are statistical screening estimates, not confirmed lab diagnoses
+    st.info(
+        "ℹ️ **Preliminary Screening Notice:** AI visual predictions are automated screening estimates based on surface foliar symptoms. "
+        "They are designed to support early scouting and do **not** replace laboratory pathogen isolation, culturing, or molecular tests. "
+        "Always evaluate plant symptoms alongside field history, soil condition, and local weather."
+    )
+
+    # Display Top Candidate Predictions with Confidence Breakdown
+    st.markdown("##### 📊 Top Candidate Disease Predictions (Probability Breakdown):")
     for idx, pred in enumerate(predictions):
         p_col1, p_col2 = st.columns([3, 1])
         with p_col1:
             st.write(f"**{idx + 1}. {pred['display_name']}**")
             st.progress(float(pred["confidence"]))
         with p_col2:
-            st.metric(label="Probability", value=pred["confidence_pct"])
+            st.metric(label="Match Confidence", value=pred["confidence_pct"])
 
-    st.caption(f"🤖 Model Backbone: {res['model_source']} | Registered Report ID: #{report_id}")
+    st.caption(f"🤖 Vision Backbone: {res['model_source']} | Stored Surveillance Record: #{report_id}")
     if res.get("notice"):
         st.caption(f"ℹ️ {res['notice']}")
 
     st.markdown("---")
 
-    # Strict Requirement: If top confidence < 60%, show "Uncertain – please consult an agriculture officer" instead of a diagnosis
+    # Fetch disease knowledge from advisory_db
+    disease_info = advisory_db.get("diseases", {}).get(top_disease, {})
+    lang_data = disease_info.get(lang_code, disease_info.get("en", {}))
+    disease_name = lang_data.get("name", res["top_display_name"])
+    scientific_name = disease_info.get("scientific_name", "Pathogen")
+    pathogen = lang_data.get("pathogen", "Plant Pathogen")
+    symptoms = lang_data.get("symptoms", "Foliar discoloration and tissue lesions.")
+
+    # LOW CONFIDENCE (< 60%): Actionable guidance instead of repetitive dead-end uncertainty
     if is_uncertain:
         st.markdown(
             f"""
-            <div class="uncertain-alert">
-                <h3 style="color: #b91c1c; margin-top: 0;">⚠️ Uncertain – please consult an agriculture officer</h3>
-                <p style="font-size: 1.05rem; margin-bottom: 8px;">
-                    <strong>Top confidence score is {top_conf*100:.1f}% (below the required 60.0% threshold).</strong>
+            <div style="background-color: #fffbeb; border: 2px solid #fde68a; border-left: 6px solid #d97706; padding: 20px; border-radius: 12px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                    <span style="font-size: 1.3rem;">⚠️</span>
+                    <h3 style="color: #92400e; margin: 0; font-size: 1.25rem; font-weight: 800;">
+                        Low-Confidence Visual Match ({top_conf*100:.1f}%) — Additional Observations Recommended
+                    </h3>
+                </div>
+                <p style="color: #78350f; font-size: 0.95rem; line-height: 1.5; margin-bottom: 12px;">
+                    The top candidate match is <strong>{disease_name}</strong>, but the visual confidence score is below the strict 60% reliability threshold. 
+                    Surface leaf symptoms may overlap with nutrient chlorosis, sunscald, or secondary saprophytic molds.
                 </p>
-                <p>To prevent erroneous diagnoses or inappropriate chemical expenditures, CropGuard has flagged this case for human expert verification.</p>
-                <ul>
-                    <li>This case has been automatically logged in the <strong>Officer Surveillance Dashboard (Report #{report_id})</strong> for review by your Taluka/District Agriculture Officer.</li>
-                    <li><strong>Tips for better photos:</strong> Retake photo in bright natural daytime light, focus sharply on active lesion margins, ensure the leaf is flat, and wipe any camera lens smudge.</li>
-                    <li>Visit your nearest <strong>Krishi Vigyan Kendra (KVK)</strong> or consult the local Agriculture Extension Officer with a fresh leaf sample in a sealed plastic bag.</li>
-                </ul>
+                <div style="background-color: #ffffff; border: 1px solid #fef3c7; border-radius: 8px; padding: 14px; margin-bottom: 12px;">
+                    <strong style="color: #92400e; font-size: 0.9rem;">📸 How to capture a more diagnostic photo for re-testing:</strong>
+                    <ul style="color: #451a03; font-size: 0.88rem; margin: 6px 0 0 0; padding-left: 20px;">
+                        <li><strong>Macro focus:</strong> Focus directly on the active margin (the boundary where healthy green tissue meets diseased spots).</li>
+                        <li><strong>Leaf underside:</strong> Flip the leaf and inspect for powdery mildew, downy fuzz, fungal pustules, or insect pests (whiteflies/thrips/aphids).</li>
+                        <li><strong>Lighting:</strong> Photograph under natural diffused daylight (morning or overcast sky) without flash glare or harsh direct shadows.</li>
+                        <li><strong>Canopy position:</strong> Note whether symptoms are isolated to oldest bottom leaves (soil-splash fungi) or newest terminal growth (viruses/micro-nutrients).</li>
+                    </ul>
+                </div>
+                <p style="color: #92400e; font-size: 0.85rem; margin: 0;">
+                    ✓ <em>This observation has been logged for regional tracking (Report #{report_id}) on the Officer Surveillance Dashboard.</em>
+                </p>
             </div>
             """,
             unsafe_allow_html=True,
         )
     else:
-        # Confident Diagnosis (>= 60%)
-        disease_info = advisory_db.get("diseases", {}).get(top_disease, {})
-        lang_data = disease_info.get(lang_code, disease_info.get("en", {}))
-
-        disease_name = lang_data.get("name", res["top_display_name"])
-        scientific_name = disease_info.get("scientific_name", "")
-        pathogen = lang_data.get("pathogen", "Pathogen")
-        symptoms = lang_data.get("symptoms", "")
-
+        # High Confidence Visual Match (>= 60%)
         st.markdown(
             f"""
-            <div class="diagnosis-success">
-                <span style="background-color: #16a34a; color: white; padding: 4px 10px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">CONFIRMED DIAGNOSIS ({top_conf*100:.1f}%)</span>
-                <h2 style="color: #14532d; margin: 8px 0 4px 0;">{disease_name}</h2>
-                <p style="color: #166534; font-size: 1rem; margin-bottom: 8px;"><strong>Scientific Name / Pathogen:</strong> <em>{scientific_name}</em> | {pathogen}</p>
-                <p style="color: #1f2937; margin: 0;"><strong>Symptoms:</strong> {symptoms}</p>
+            <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-left: 6px solid #16a34a; padding: 20px; border-radius: 12px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="background-color: #16a34a; color: white; padding: 3px 10px; border-radius: 9999px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase;">
+                        Visual Candidate Match ({top_conf*100:.1f}%)
+                    </span>
+                    <span style="font-size: 0.8rem; color: #15803d; font-weight: 600;">Report #{report_id}</span>
+                </div>
+                <h2 style="color: #064e3b; margin: 4px 0 6px 0; font-size: 1.6rem; font-weight: 800;">{disease_name}</h2>
+                <p style="color: #047857; font-size: 0.95rem; margin-bottom: 8px;">
+                    <strong>Pathogen:</strong> {pathogen} &nbsp;|&nbsp; <em>{scientific_name}</em>
+                </p>
+                <p style="color: #1e293b; font-size: 0.9rem; margin: 0; line-height: 1.5;">
+                    <strong>Observed Symptom Profile:</strong> {symptoms}
+                </p>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-        st.markdown("### 📋 Integrated Pest Management (IPM) Advisory")
-        st.markdown(
-            f"*Language Selected: **{language_choice}** | Following ICAR & Central Institute Guidelines*"
-        )
+    # 5 STRUCTURED ACTIONABLE SECTIONS FOR THE FARMER
+    st.markdown("### 📋 Actionable Farmer Disease Management Protocol")
+    st.caption("Structured recommendations following Integrated Pest Management (IPM) and ICAR/KVK guidance.")
 
-        tab_cult, tab_bio, tab_chem, tab_safe = st.tabs([
-            "🌱 Cultural Practices",
-            "🧫 Biological Controls",
-            "🧪 Chemical (Last Resort)",
-            "🦺 Safety & Pre-Harvest",
-        ])
-
-        with tab_cult:
-            st.markdown("#### Cultural & Agronomic Interventions:")
-            for item in lang_data.get("cultural", []):
-                st.markdown(f"- {item}")
-
-        with tab_bio:
-            st.markdown("#### Biological & Organic Biocontrols:")
-            for item in lang_data.get("biological", []):
-                st.markdown(f"- {item}")
-
-        with tab_chem:
-            st.markdown("#### Chemical Controls (Strictly As Last Resort):")
-            st.warning("⚠️ Strictly follow Economic Threshold Levels (ETL). Never apply calendar prophylactic chemical sprays.")
-            for item in lang_data.get("chemical_last", []):
-                st.markdown(f"- {item}")
-
-        with tab_safe:
-            st.markdown("#### Protective Equipment & Health Measures:")
-            for item in lang_data.get("safety_notes", []):
-                st.markdown(f"- {item}")
-
-        # Official Disclaimer in current language
-        disclaimer_text = advisory_db.get("disclaimer", {}).get(lang_code, advisory_db.get("disclaimer", {}).get("en", ""))
+    # Section A: Possible Disease & Observed Symptoms
+    with st.expander("🔍 A. Possible Disease & Observed Symptoms", expanded=True):
         st.markdown(
             f"""
-            <div class="disclaimer-banner">
-                <strong>📜 Regulatory Notice:</strong> {disclaimer_text}
-            </div>
-            """,
-            unsafe_allow_html=True,
+            - **Candidate Disease:** **{disease_name}**
+            - **Scientific Name / Group:** *{scientific_name}* ({pathogen})
+            - **Target Crop:** {crop_selected}
+            - **Key Field Symptoms:** {symptoms}
+            - **Micro-Climate Epidemiological Risk:** Currently rated **{risk_level}** at {location_label} ({weather_info['temperature']}°C, {weather_info['humidity']}% Relative Humidity, {weather_info['precipitation']} mm rain).
+            - **Diagnostic Caution:** Visual similarity to other foliar conditions (such as physiological nutrient scorch or non-pathogenic leaf spots) means physical and field confirmation is always prudent.
+            """
         )
+
+    # Section B: Immediate Steps the Farmer Can Take
+    with st.expander("⚡ B. Immediate Steps the Farmer Can Take (First 24–48 Hours)", expanded=True):
+        st.markdown(
+            """
+            1. **Sanitary Pruning:** Carefully clip and remove severely spotted or yellowed lower foliage that touches the soil. Do **not** leave clipped leaves on the ground.
+            2. **Safe Disposal:** Collect diseased foliage in a clean bag and bury or burn it away from the field perimeter. **Never add diseased foliage to active compost heaps.**
+            3. **Tool Sterilization:** Wash secateurs, sickles, and knives in a 70% alcohol solution or 1% sodium hypochlorite (household bleach diluted 1:9 in water) before moving between plants.
+            4. **Foliage Drying:** Suspend any overhead sprinkler irrigation. Wet leaves provide the free moisture film necessary for fungal zoospores and bacteria to penetrate stomata.
+            5. **Restrict Field Movement:** Avoid walking through or cultivating the crop while morning dew remains on leaves to prevent mechanical transfer of inoculum across rows.
+            """
+        )
+
+    # Section C: Disease-Specific Prevention Methods
+    with st.expander("🛡️ C. Disease-Specific Prevention Methods", expanded=True):
+        st.markdown(f"#### Recommended Agronomic Prevention for {crop_selected} ({disease_name}):")
+        cultural_points = lang_data.get("cultural", [])
+        if cultural_points:
+            for pt in cultural_points:
+                st.markdown(f"- {pt}")
+        else:
+            st.markdown(
+                """
+                - Practice a minimum 2-year crop rotation with non-host botanical families (e.g. cereals, pulses, or brassicas).
+                - Plant certified, pathogen-free seeds or transplants from reputable nurseries.
+                - Utilize resistant or tolerant crop hybrids recommended by your State Agricultural University.
+                - Apply reflective organic mulches (paddy straw or two-tone plastic mulch) to minimize soil splash and insect landing.
+                """
+            )
+
+    # Section D: Crop Hygiene, Watering, Drainage & Monitoring Recommendations
+    with st.expander("💧 D. Crop Hygiene, Watering, Drainage & Monitoring Recommendations", expanded=True):
+        st.markdown(
+            """
+            - **Watering Management:** Utilize drip irrigation or targeted sub-surface emitters placed directly at the root zone. Irrigate in the early morning so accidental splashes dry rapidly in the sun.
+            - **Drainage & Aeration:** Create raised planting beds (15–20 cm) and unblock drainage furrows to prevent water stagnation around plant crowns during monsoon showers.
+            - **Air Circulation:** Maintain recommended row-to-row and plant-to-plant spacing to facilitate continuous airflow through the lower canopy.
+            - **Bund Sanitation:** Keep farm bunds and boundaries completely free of wild weeds (such as *Solanum nigrum*, *Parthenium*, or wild mallows) which harbor viral vectors and fungal inoculum.
+            - **Twice-Weekly Monitoring:** Walk field diagonals twice every week during early vegetative and flowering stages. Record the percentage of leaves displaying new water-soaked margins or target rings.
+            """
+        )
+
+    # Section E: When to Seek Agricultural Expert Confirmation
+    with st.expander("🏛️ E. When to Seek Confirmation from an Agricultural Expert", expanded=True):
+        st.markdown(
+            """
+            **Immediate Expert Scouting Triggers — Contact your local Agriculture Officer or KVK if you observe:**
+            - 🚩 **Rapid Expansion:** Spotting or necrosis spreads to more than **15–20% of the field canopy** within 48 to 72 hours.
+            - 🚩 **Stem or Crown Cankers:** Dark lesions expand onto the main stem, crown, or tomato fruit calyx/cotton bolls/onion neck.
+            - 🚩 **Total Wilting:** Whole plants wilt rapidly during the day despite moist soil (indicative of vascular bacterial wilt or *Fusarium*).
+            - 🚩 **Vector Outbreaks:** Heavy colonies of whiteflies, thrips, or aphids congregate on the underside of young leaves.
+            - 🚩 **Lack of Biocontrol Response:** Symptoms continue to progress after 4–5 days of cultural sanitation and biological biocontrol application.
+            
+            **How to Take a Sample to Your Local Krishi Vigyan Kendra (KVK):**
+            - Collect 3–4 freshly affected leaves showing both diseased margins and adjacent healthy green tissue.
+            - Place the sample in a dry, ventilated paper envelope (avoid airtight moist plastic bags which foster saprophytic rot).
+            - Note the date of symptom onset, crop age, and recent spray history.
+            """
+        )
+
+    # Monitored Biological & Chemical Intervention Safeguards
+    st.markdown("### 🧪 Monitored Treatments & Responsible Safeguards")
+    tab_bio, tab_chem, tab_safe = st.tabs([
+        "🧫 Biological Biocontrols (Eco-Friendly)",
+        "⚠️ Chemical Interventions (Strictly Monitored Last Resort)",
+        "🦺 Operator Safety & Pre-Harvest Intervals (PHI)",
+    ])
+
+    with tab_bio:
+        st.markdown("#### Biological Controls & Organic Bio-Fungicides:")
+        bio_items = lang_data.get("biological", [])
+        if bio_items:
+            for item in bio_items:
+                st.markdown(f"- {item}")
+        else:
+            st.markdown("- Apply *Trichoderma viride* or *Pseudomonas fluorescens* formulations during early morning or evening.")
+            st.markdown("- Utilize 5% Neem Seed Kernel Extract (NSKE) as an organic deterrent against early fungal sporulation and insect vectors.")
+
+    with tab_chem:
+        st.markdown("#### Chemical Controls (Strictly As Monitored Last Resort):")
+        st.error(
+            "⚠️ **Responsible Chemical Usage Policy:** Chemical pesticides must **only** be deployed if disease incidence surpasses the "
+            "established **Economic Threshold Level (ETL)** and biological/cultural methods prove insufficient. "
+            "Never apply prophylactic calendar sprays. Consult your local KVK or Agriculture Officer for CIBRC-registered active ingredients."
+        )
+        chem_items = lang_data.get("chemical_last", [])
+        for item in chem_items:
+            st.markdown(f"- {item}")
+
+    with tab_safe:
+        st.markdown("#### Operator Health, PPE & Pre-Harvest Intervals:")
+        safe_items = lang_data.get("safety_notes", [])
+        for item in safe_items:
+            st.markdown(f"- {item}")
+        st.markdown("- **Pre-Harvest Interval (PHI):** Always observe the mandatory waiting period between application and harvest to guarantee residue-free produce for consumers.")
+
+    # Regulatory Notice
+    disclaimer_text = advisory_db.get("disclaimer", {}).get(lang_code, advisory_db.get("disclaimer", {}).get("en", ""))
+    st.markdown(
+        f"""
+        <div class="disclaimer-banner">
+            <strong>📜 Official Agricultural Extension Advisory Notice:</strong><br>
+            {disclaimer_text}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 else:
     st.info("👆 Provide or select an image on the left and click **'Run Disease Diagnosis'** to classify symptoms.")

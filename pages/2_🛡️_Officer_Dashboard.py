@@ -129,65 +129,74 @@ with map_col_opts1:
 
 map_df = df_reports[df_reports["crop"].isin(filter_crop_map)]
 
-# Initialize Folium Map centered on Maharashtra
-m = folium.Map(
-    location=[19.2, 75.8],
-    zoom_start=7,
-    tiles="CartoDB positron",
-    control_scale=True,
-)
+# Initialize Folium Map centered on Maharashtra using public OpenStreetMap tiles (no API key required)
+try:
+    m = folium.Map(
+        location=[19.25, 75.75],
+        zoom_start=7,
+        tiles="https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        attr='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        control_scale=True,
+    )
 
-# Marker Colors by Disease Severity / Status
-def get_marker_color(row):
-    if row["is_uncertain"] == 1:
-        return "purple"
-    if row["weather_risk"] == "High":
-        return "red"
-    if "healthy" in row["predicted_disease"]:
-        return "green"
-    return "orange"
+    # Marker Colors by Disease Severity / Status
+    def get_marker_color(row):
+        if row["is_uncertain"] == 1:
+            return "purple"
+        if row["weather_risk"] == "High":
+            return "red"
+        if "healthy" in row["predicted_disease"]:
+            return "green"
+        return "orange"
 
-# Add HeatMap Layer if selected
-if map_view_mode in ["Both (Pins & Heatmap)", "Heatmap Only"] and not map_df.empty:
-    heat_data = [[row["latitude"], row["longitude"], float(row["confidence"])] for _, row in map_df.iterrows()]
-    HeatMap(heat_data, radius=18, blur=14, max_zoom=10).add_to(m)
+    # Add HeatMap Layer if selected
+    if map_view_mode in ["Both (Pins & Heatmap)", "Heatmap Only"] and not map_df.empty:
+        heat_data = [[row["latitude"], row["longitude"], float(row["confidence"])] for _, row in map_df.iterrows()]
+        HeatMap(heat_data, radius=18, blur=14, max_zoom=10).add_to(m)
 
-# Add Markers if selected
-if map_view_mode in ["Both (Pins & Heatmap)", "Pins with Popups Only"]:
-    marker_cluster = MarkerCluster().add_to(m)
-    for _, r in map_df.iterrows():
-        color = get_marker_color(r)
-        status_badge = f"<b>Status:</b> {r['expert_status']}"
-        if r["expert_label"]:
-            status_badge += f" (Corrected: {r['expert_label']})"
+    # Add Markers if selected
+    if map_view_mode in ["Both (Pins & Heatmap)", "Pins with Popups Only"]:
+        marker_cluster = MarkerCluster().add_to(m)
+        for _, r in map_df.iterrows():
+            color = get_marker_color(r)
+            status_badge = f"<b>Status:</b> {r['expert_status']}"
+            if r["expert_label"]:
+                status_badge += f" (Corrected: {r['expert_label']})"
 
-        popup_html = f"""
-        <div style="font-family: sans-serif; font-size: 12px; width: 220px;">
-            <h4 style="margin: 0 0 6px 0; color: #1e3a8a;">Report #{r['id']} ({r['crop'].upper()})</h4>
-            <b>Diagnosis:</b> {model.DISEASE_DISPLAY_NAMES.get(r['predicted_disease'], r['predicted_disease'])}<br>
-            <b>Confidence:</b> {r['confidence']*100:.1f}%<br>
-            <b>Weather Risk:</b> <span style="color: {'red' if r['weather_risk']=='High' else 'green'}; font-weight: bold;">{r['weather_risk']}</span><br>
-            <b>Location:</b> {r['location_name']}<br>
-            <b>Date:</b> {r['timestamp']}<br>
-            {status_badge}<br>
-            {'<span style="color: #b91c1c; font-weight: bold;">⚠️ Low Confidence Flag</span>' if r['is_uncertain'] else ''}
-        </div>
-        """
-        folium.CircleMarker(
-            location=[r["latitude"], r["longitude"]],
-            radius=7,
-            popup=folium.Popup(popup_html, max_width=250),
-            tooltip=f"#{r['id']} - {r['crop'].title()} ({r['predicted_disease']})",
-            color=color,
-            fill=True,
-            fill_color=color,
-            fill_opacity=0.85,
-        ).add_to(marker_cluster)
+            popup_html = f"""
+            <div style="font-family: sans-serif; font-size: 12px; width: 220px;">
+                <h4 style="margin: 0 0 6px 0; color: #1e3a8a;">Report #{r['id']} ({r['crop'].upper()})</h4>
+                <b>Diagnosis:</b> {model.DISEASE_DISPLAY_NAMES.get(r['predicted_disease'], r['predicted_disease'])}<br>
+                <b>Confidence:</b> {r['confidence']*100:.1f}%<br>
+                <b>Weather Risk:</b> <span style="color: {'red' if r['weather_risk']=='High' else 'green'}; font-weight: bold;">{r['weather_risk']}</span><br>
+                <b>Location:</b> {r['location_name']}<br>
+                <b>Date:</b> {r['timestamp']}<br>
+                {status_badge}<br>
+                {'<span style="color: #b91c1c; font-weight: bold;">⚠️ Low Confidence Flag</span>' if r['is_uncertain'] else ''}
+            </div>
+            """
+            folium.CircleMarker(
+                location=[r["latitude"], r["longitude"]],
+                radius=7,
+                popup=folium.Popup(popup_html, max_width=250),
+                tooltip=f"#{r['id']} - {r['crop'].title()} ({r['predicted_disease']})",
+                color=color,
+                fill=True,
+                fill_color=color,
+                fill_opacity=0.85,
+            ).add_to(marker_cluster)
 
-# Render map in Streamlit
-st.components.v1.html(m._repr_html_(), height=500, scrolling=False)
+    # Render map in Streamlit
+    st.components.v1.html(m._repr_html_(), height=520, scrolling=False)
+    st.caption("🔴 Red: High Weather Risk | 🟠 Orange: Active Pathogen | 🟣 Purple: Uncertain / Flagged (<60%) | 🟢 Green: Healthy Crop")
 
-st.caption("🔴 Red: High Weather Risk | 🟠 Orange: Active Pathogen | 🟣 Purple: Uncertain / Flagged (<60%) | 🟢 Green: Healthy Crop")
+except Exception as map_err:
+    st.warning("⚠️ Map Tile Notice: Interactive GIS tiles could not be rendered. Presenting geospatial tabular records below.")
+    st.caption(f"Diagnostics: {map_err}")
+    st.dataframe(
+        map_df[["id", "timestamp", "crop", "predicted_disease", "confidence", "location_name", "latitude", "longitude", "weather_risk", "expert_status"]],
+        use_container_width=True,
+    )
 
 st.divider()
 

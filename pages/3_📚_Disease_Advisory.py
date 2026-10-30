@@ -18,28 +18,45 @@ st.markdown(
     """
     <style>
     .advisory-header {
-        background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
-        padding: 20px 24px;
-        border-radius: 12px;
+        background: linear-gradient(135deg, #064e3b 0%, #047857 55%, #059669 100%);
+        padding: 24px 28px;
+        border-radius: 14px;
         color: white;
         margin-bottom: 20px;
+        box-shadow: 0 4px 14px rgba(6, 78, 59, 0.15);
+    }
+    .advisory-header h2 {
+        color: white !important;
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 800;
     }
     .disease-banner {
         background-color: #f8fafc;
         border: 1px solid #e2e8f0;
-        border-left: 6px solid #2563eb;
+        border-left: 6px solid #10b981;
         padding: 16px 20px;
-        border-radius: 8px;
-        margin: 16px 0;
+        border-radius: 10px;
+        margin: 14px 0;
     }
     .disclaimer-card {
-        background-color: #fefce8;
-        border: 1px solid #fde047;
-        border-left: 5px solid #eab308;
-        padding: 14px 18px;
-        border-radius: 8px;
-        color: #713f12;
-        margin-top: 24px;
+        background-color: #fffbeb;
+        border: 1px solid #fde68a;
+        border-left: 5px solid #d97706;
+        padding: 16px 20px;
+        border-radius: 10px;
+        color: #92400e;
+        margin-top: 28px;
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+    .ipm-framework-box {
+        background-color: #ffffff;
+        border: 1px solid #d1fae5;
+        border-radius: 12px;
+        padding: 18px 22px;
+        margin-bottom: 22px;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.05);
     }
     </style>
     """,
@@ -75,10 +92,26 @@ with st.sidebar:
 st.markdown(
     """
     <div class="advisory-header">
-        <h2 style="color:white; margin:0;">📚 Trilingual IPM Disease & Pest Advisory Catalog</h2>
-        <p style="margin:4px 0 0 0; opacity:0.95;">
+        <h2>📚 Trilingual IPM Disease & Pest Advisory Catalog</h2>
+        <p style="margin: 6px 0 0 0; opacity: 0.95; font-size: 1.05rem;">
             Integrated Pest Management (IPM) Protocols • Cultural • Biological • Chemical-Last • Safety
         </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Overarching IPM Framework (Avoids repeating the same warning on every individual card)
+st.markdown(
+    """
+    <div class="ipm-framework-box">
+        <h4 style="color: #064e3b; margin: 0 0 8px 0; font-size: 1.05rem;">🌿 Integrated Pest Management (IPM) Guiding Philosophy</h4>
+        <div style="font-size: 0.88rem; color: #334155; line-height: 1.55;">
+            CropGuard structures plant pathology management into three strictly prioritized tiers:
+            <strong>Tier 1: Preventive Agronomic & Cultural Controls</strong> (seed selection, field hygiene, drip watering, crop rotation) 
+            ➔ <strong>Tier 2: Biological & Bio-Pesticide Defenses</strong> (beneficial microorganisms, botanical repellents, pheromone monitoring) 
+            ➔ <strong>Tier 3: Monitored Chemical Intervention</strong> (applied only when pest incidence exceeds verified Economic Threshold Levels, adhering strictly to CIBRC guidelines and Pre-Harvest Intervals).
+        </div>
     </div>
     """,
     unsafe_allow_html=True,
@@ -138,11 +171,11 @@ for d_key in filtered_keys:
         st.markdown(
             f"""
             <div class="disease-banner">
-                <h3 style="margin: 0 0 6px 0; color: #1e3a8a;">{lang_data.get('name')}</h3>
-                <p style="margin: 0 0 8px 0; color: #475569;">
-                    <strong>Pathogen:</strong> {lang_data.get('pathogen', '')} | <em>{sci_name}</em>
+                <h3 style="margin: 0 0 6px 0; color: #064e3b; font-size: 1.25rem;">{lang_data.get('name')}</h3>
+                <p style="margin: 0 0 6px 0; color: #047857; font-size: 0.92rem;">
+                    <strong>Pathogen:</strong> {lang_data.get('pathogen', '')} &nbsp;|&nbsp; <em>{sci_name}</em>
                 </p>
-                <p style="margin: 0; color: #1e293b;">
+                <p style="margin: 0; color: #1e293b; font-size: 0.9rem; line-height: 1.5;">
                     <strong>Diagnostic Symptoms:</strong> {lang_data.get('symptoms', '')}
                 </p>
             </div>
@@ -150,28 +183,35 @@ for d_key in filtered_keys:
             unsafe_allow_html=True,
         )
 
-        col_c, col_b = st.columns(2)
-        with col_c:
-            st.markdown("##### 🌱 1. Cultural & Preventative Practices")
-            for item in lang_data.get("cultural", []):
-                st.markdown(f"- {item}")
+        # Clear separation between Preventive Measures and Monitored Treatments
+        tab_prev, tab_treat = st.tabs([
+            "🛡️ Part I: Preventive Measures (Cultural & Biological)",
+            "🧪 Part II: Monitored Treatment & Remediation (Last Resort)",
+        ])
 
-        with col_b:
-            st.markdown("##### 🧫 2. Biological & Organic Controls")
-            for item in lang_data.get("biological", []):
-                st.markdown(f"- {item}")
+        with tab_prev:
+            col_c, col_b = st.columns(2)
+            with col_c:
+                st.markdown("##### 🌱 1. Cultural & Agronomic Prevention")
+                for item in lang_data.get("cultural", []):
+                    st.markdown(f"- {item}")
 
-        col_ch, col_s = st.columns(2)
-        with col_ch:
-            st.markdown("##### 🧪 3. Chemical Controls (Strictly As Last Resort)")
-            st.warning("⚠️ Never apply chemical sprays without exceeding Economic Threshold Levels (ETL).")
-            for item in lang_data.get("chemical_last", []):
-                st.markdown(f"- {item}")
+            with col_b:
+                st.markdown("##### 🧫 2. Biological Biocontrols & Bio-Pesticides")
+                for item in lang_data.get("biological", []):
+                    st.markdown(f"- {item}")
 
-        with col_s:
-            st.markdown("##### 🦺 4. Operator Safety & Pre-Harvest Interval")
-            for item in lang_data.get("safety_notes", []):
-                st.markdown(f"- {item}")
+        with tab_treat:
+            col_ch, col_s = st.columns(2)
+            with col_ch:
+                st.markdown("##### 🧪 1. Chemical Interventions (Strictly After ETL Breached)")
+                for item in lang_data.get("chemical_last", []):
+                    st.markdown(f"- {item}")
+
+            with col_s:
+                st.markdown("##### 🦺 2. Operator Safety, PPE & Pre-Harvest Intervals (PHI)")
+                for item in lang_data.get("safety_notes", []):
+                    st.markdown(f"- {item}")
 
 # Regulatory Notice
 disclaimer_body = disclaimer_dict.get(lang_code, disclaimer_dict.get("en", ""))
