@@ -1,0 +1,6 @@
+{
+  "name": "CropGuard - Early Crop Disease & Pest Detection",
+  "description": "CropGuard: an open-source crop disease and pest detection tool featuring AI classification, Open-Meteo weather epidemiology, trilingual IPM advisory, and GIS surveillance dashboard.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

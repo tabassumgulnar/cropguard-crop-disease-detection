@@ -1,0 +1,786 @@
+{
+  "disclaimer": {
+    "en": "IMPORTANT NOTICE: Guidance provided under CropGuard is for educational and advisory purposes following Integrated Pest Management (IPM) principles. Chemical treatments must only be considered as a last resort. Always consult your local Krishi Vigyan Kendra (KVK), ICAR center, or State Agriculture Extension Officer for locally approved active ingredients, formulations, and spray schedules. Strictly follow product label instructions and personal protective safety measures. CropGuard does not prescribe chemical dosages.",
+    "hi": "महत्वपूर्ण सूचना: क्रॉपगार्ड (CropGuard) द्वारा दी गई सलाह एकीकृत कीट प्रबंधन (IPM) सिद्धांतों के अनुसार शैक्षिक एवं मार्गदर्शन के उद्देश्य से है। रासायनिक उपचार का उपयोग केवल अंतिम विकल्प के रूप में किया जाना चाहिए। अपने क्षेत्र में अनुशंसित रसायनों, सटीक संरचना और छिड़काव समय के लिए हमेशा अपने स्थानीय कृषि विज्ञान केंद्र (KVK), ICAR या राज्य कृषि विस्तार अधिकारी से परामर्श लें। कीटनाशक लेबल पर दिए गए सुरक्षा निर्देशों का कड़ाई से पालन करें। क्रॉपगार्ड किसी रासायनिक खुराक का निर्धारण नहीं करता है।",
+    "mr": "महत्त्वाची सूचना: क्रॉपगार्ड (CropGuard) द्वारे दिलेला सल्ला हा एकात्मिक कीड व्यवस्थापन (IPM) तत्त्वांनुसार शैक्षणिक व मार्गदर्शनाच्या हेतूने आहे. रासायनिक फवारणी हा केवळ शेवटचा पर्याय असावा. आपल्या भागातील मान्यताप्राप्त औषधे व फवारणीच्या योग्य वेळेसाठी नेहमी स्थानिक कृषी विज्ञान केंद्र (KVK), ICAR किंवा कृषी विस्तार अधिकाऱ्यांचा सल्ला घ्या. वेष्टनावरील सुरक्षा सूचनांचे काटेकोरपणे पालन करा. क्रॉपगार्ड कोणत्याही रासायनिक डोसचे निर्धारण करत नाही."
+  },
+  "diseases": {
+    "tomato_early_blight": {
+      "crop": "tomato",
+      "scientific_name": "Alternaria solani",
+      "en": {
+        "name": "Tomato Early Blight",
+        "pathogen": "Fungus (Alternaria solani)",
+        "symptoms": "Dark brown to black spots with concentric rings (target board pattern) primarily starting on older lower leaves. Leaves yellow and drop prematurely.",
+        "cultural": [
+          "Remove and safely destroy infected lower leaves from the field.",
+          "Maintain adequate plant spacing (60x45 cm) for proper air circulation.",
+          "Use drip irrigation or furrow irrigation; avoid overhead sprinkler watering that wets leaves.",
+          "Practice crop rotation with non-solanaceous crops (avoid potato, brinjal, chilli for 2 seasons).",
+          "Apply organic straw or plastic mulch to prevent soil-borne splash to leaves."
+        ],
+        "biological": [
+          "Foliar spray of Trichoderma harzianum or Trichoderma viride formulation during early morning or evening.",
+          "Apply Pseudomonas fluorescens bio-fungicide at transplanting and early vegetative stage.",
+          "Use 5% Neem Seed Kernel Extract (NSKE) as an organic prophylactic deterrent."
+        ],
+        "chemical_last": [
+          "Consider broad-spectrum protective fungicides (e.g., Copper oxychloride or Mancozeb) only if infection exceeds economic threshold level (ETL) and after biocontrol trials.",
+          "Rotate chemical classes to prevent resistance development.",
+          "Consult local KVK / ICAR agronomist for registered formulations and regional spray timings."
+        ],
+        "safety_notes": [
+          "Wear full personal protective equipment (gloves, mask, goggles, boots) during application.",
+          "Do not spray during peak noon heat or windy weather.",
+          "Observe mandatory Pre-Harvest Interval (PHI) before picking tomatoes."
+        ]
+      },
+      "hi": {
+        "name": "टमाटर का अगेती झुलसा (Early Blight)",
+        "pathogen": "कवक (Alternaria solani)",
+        "symptoms": "निचली और पुरानी पत्तियों पर भूरे-काले संकेंद्रित छल्लों (टारगेट बोर्ड जैसे) वाले धब्बे बनते हैं। पत्तियां पीली पड़कर सूखने लगती हैं।",
+        "cultural": [
+          "संक्रमित निचली पत्तियों को तोड़कर खेत से दूर नष्ट कर दें।",
+          "पौधों के बीच पर्याप्त दूरी (60x45 सेमी) रखें ताकि हवा का संचार बना रहे।",
+          "ड्रिप सिंचाई अपनाएं; पत्तियों को गीला करने वाले फव्वारा सिंचाई से बचें।",
+          "सोलेनेसी कुल (आलू, बैंगन, मिर्च) के साथ फसल चक्र न अपनाएं; 2 वर्षों तक अन्य फसलें लगाएं।",
+          "मिट्टी से रोग फैलने से रोकने के लिए पुआल या प्लास्टिक मल्चिंग का प्रयोग करें।"
+        ],
+        "biological": [
+          "ट्राइकोडर्मा विरिडी या ट्राइकोडर्मा हरजिएनम का सुबह या शाम के समय छिड़काव करें।",
+          "रोपाई के समय स्यूडोमोनास फ्लोरोसेंस का जैव-उपचार करें।",
+          "5% नीम बीज अर्क (NSKE) का रोग-प्रतिरोधी छिड़काव करें।"
+        ],
+        "chemical_last": [
+          "रासायनिक कवकनाशी (जैसे कॉपर ऑक्सीक्लोराइड या मैंकोजेब) का उपयोग केवल अंतिम उपाय के रूप में करें जब क्षति स्तर सीमा से अधिक हो।",
+          "प्रतिरोधक क्षमता रोकने के लिए रसायनों के समूह को बदलते रहें।",
+          "सटीक उत्पाद और समय के लिए स्थानीय कृषि विज्ञान केंद्र (KVK) से परामर्श लें।"
+        ],
+        "safety_notes": [
+          "छिड़काव करते समय मास्क, दस्ताने, चश्मा और जूते अवश्य पहनें।",
+          "तेज हवा और कड़ी धूप में छिड़काव न करें।",
+          "फसल तुड़ाई से पहले सुरक्षा प्रतीक्षा अवधि (PHI) का अनिवार्य रूप से पालन करें।"
+        ]
+      },
+      "mr": {
+        "name": "टोमॅटोवरील लवकर येणारा करपा (Early Blight)",
+        "pathogen": "बुरशी (Alternaria solani)",
+        "symptoms": "खालच्या जुन्या पानांवर गोलाकार व वलयाकार तपकिरी-काळे डाग दिसतात. पाने पिवळी पडून गळतात.",
+        "cultural": [
+          "रोगट झालेली खालची पाने काढून शेताबाहेर नष्ट करा.",
+          "रोपांमध्ये योग्य अंतर (६०x४५ सेमी) ठेवा जेणेकरून हवा खेळती राहील.",
+          "ठिबक सिंचनाचा वापर करा; पानांवर पाणी पडणार नाही याची काळजी घ्या.",
+          "टोमॅटोनंतर बटाटा, वांगी, मिरची अशी पिके न घेता पीकपालट करा.",
+          "मातीतून होणारा प्रादुर्भाव रोखण्यासाठी मल्चिंगचा वापर करा."
+        ],
+        "biological": [
+          "ट्रायकोडर्मा व्हिरिडी किंवा ट्रायकोडर्मा हरझियानमची सकाळच्या किंवा संध्याकाळच्या वेळी फवारणी करा.",
+          "रोपांच्या लागवडीवेळी स्युडोमोनास फ्लुरोसेन्सने प्रक्रिया करा.",
+          "प्रतिबंधक उपाय म्हणून ५% निंबोळी अर्क (NSKE) फवारा."
+        ],
+        "chemical_last": [
+          "जैविक उपाय करूनही रोगाचा प्रादुर्भाव आर्थिक नुकसान पातळीच्या पुढे गेल्यासच शिफारशीत बुरशीनाशकांचा विचार करा.",
+          "स्थानिक कृषी विज्ञान केंद्र किंवा कृषी अधिकाऱ्यांच्या सल्ल्यानुसारच योग्य औषधांची निवड करा."
+        ],
+        "safety_notes": [
+          "फवारणी करताना मास्क, हातमोजे आणि चष्मा वापरा.",
+          "वाऱ्याच्या दिशेने फवारणी करू नका आणि भर उन्हात फवारणी टाळा.",
+          "तोडणीपूर्वीची प्रतीक्षा मुदत (PHI) तपासा."
+        ]
+      }
+    },
+    "tomato_late_blight": {
+      "crop": "tomato",
+      "scientific_name": "Phytophthora infestans",
+      "en": {
+        "name": "Tomato Late Blight",
+        "pathogen": "Oomycete (Phytophthora infestans)",
+        "symptoms": "Water-soaked dark lesions on leaf tips and margins with white fuzzy fungal growth on the underside during humid/cool weather. Stems and green fruits rapidly turn brown and rot.",
+        "cultural": [
+          "Immediately eliminate and bury volunteer tomato and potato plants.",
+          "Avoid excessive nitrogen fertilization which produces overly lush, susceptible foliage.",
+          "Ensure wide row spacing and good field drainage.",
+          "Keep foliage dry; strictly avoid late-afternoon irrigation."
+        ],
+        "biological": [
+          "Prophylactic foliar spray of Trichoderma spp. and antagonistic Bacillus subtilis strains.",
+          "Neem oil 10,000 ppm sprays to create an organic protective barrier on foliage."
+        ],
+        "chemical_last": [
+          "Protective and curative systemic fungicides (e.g., cymoxanil or dimethomorph-based formulations) registered for late blight only as an emergency response during epidemics.",
+          "Consult local KVK/ICAR agronomist before purchase for active registration."
+        ],
+        "safety_notes": [
+          "Use dedicated protective spray gear.",
+          "Wash hands and face thoroughly with soap after handling."
+        ]
+      },
+      "hi": {
+        "name": "टमाटर का पछेती झुलसा (Late Blight)",
+        "pathogen": "कवक सदृश जीव (Phytophthora infestans)",
+        "symptoms": "पत्तियों के किनारों पर गीले भूरे-काले धब्बे बनते हैं और नमी में पत्तियों के नीचे सफेद फफूंद दिखती है। तने और कच्चे फल तेजी से सड़ने लगते हैं।",
+        "cultural": [
+          "संक्रमित पौधों और मलबे को तुरंत उखाड़कर जमीन में गहरा दबा दें।",
+          "अत्यधिक यूरिया (नाइट्रोजन) के प्रयोग से बचें।",
+          "खेत में जल निकासी की उचित व्यवस्था रखें और पौधों में पर्याप्त दूरी रखें।",
+          "दोपहर बाद सिंचाई न करें ताकि रात में पत्तियां सूखी रहें।"
+        ],
+        "biological": [
+          "ट्राइकोडर्मा और बैसिलस सबटिलिस का रोग आने से पहले छिड़काव करें।",
+          "सुरक्षात्मक कवच के रूप में नीम तेल का छिड़काव करें।"
+        ],
+        "chemical_last": [
+          "यदि मौसम अत्यधिक आर्द्र और ठंडा हो तथा रोग तीव्र हो, तो केवल केवीके की सलाह पर अनुशंसित फफूंदनाशी का उपयोग करें।",
+          "हमेशा लेबल के निर्देशों का पालन करें।"
+        ],
+        "safety_notes": [
+          "छिड़काव के समय सुरक्षा उपकरण अवश्य पहनें।",
+          "बच्चों व मवेशियों को छिड़काव वाले क्षेत्र से दूर रखें।"
+        ]
+      },
+      "mr": {
+        "name": "टोमॅटोवरील उशिरा येणारा करपा (Late Blight)",
+        "pathogen": "ओमायसेट (Phytophthora infestans)",
+        "symptoms": "पानांच्या कडांवर काळपट-तपकिरी पाणीदार चट्टे पडतात व पानांच्या मागच्या बाजूला पांढरी बुरशी वाढते. खोड व कच्ची फळे कुजतात.",
+        "cultural": [
+          "रोगट झाडे तात्काळ उपटून खोल जमिनीत गाडून टाका.",
+          "नत्राचा (युरिया) अतिरेकी वापर टाळा.",
+          "शेतात पाण्याचा निचरा व्यवस्थित ठेवा.",
+          "संध्याकाळी पाणी देणे टाळा जेणेकरून रात्री झाडे ओली राहणार नाहीत."
+        ],
+        "biological": [
+          "रोग येण्यापूर्वी ट्रायकोडर्मा किंवा बॅसिलस सबटिलिसचा फवारा द्या.",
+          "१०,००० पीपीएम कडुनिंब तेलाची फवारणी करा."
+        ],
+        "chemical_last": [
+          "रोग वेगाने पसरत असल्यास कृषी विज्ञान केंद्राने शिफारस केलेल्या अंतरप्रवाही बुरशीनाशकांचाच वापर करा."
+        ],
+        "safety_notes": [
+          "संरक्षक पोशाख व मास्क वापरा.",
+          "फवारणीनंतर साबणाने स्वच्छ हात-पाय धुवा."
+        ]
+      }
+    },
+    "tomato_leaf_curl_virus": {
+      "crop": "tomato",
+      "scientific_name": "Tomato Yellow Leaf Curl Virus (TYLCV)",
+      "en": {
+        "name": "Tomato Leaf Curl Virus (TYLCV)",
+        "pathogen": "Begomovirus (Vectored by Whitefly - Bemisia tabaci)",
+        "symptoms": "Severe upward curling and puckering of leaves, yellowing of leaf margins, extreme stunting of plants, and flower drop with negligible fruit set.",
+        "cultural": [
+          "Install yellow sticky traps (15-20 per acre) at canopy level to monitor and mass-trap whiteflies.",
+          "Use 40-mesh insect-proof nylon nets in nursery beds.",
+          "Eradicate weed hosts (Parthenium, Abutilon) around field borders.",
+          "Plant tall border crops (sorghum, maize, or pearl millet in 2-3 dense rows) as physical barrier against whitefly drift."
+        ],
+        "biological": [
+          "Spray Neem oil (10,000 ppm) or 5% NSKE at weekly intervals to disrupt whitefly egg laying.",
+          "Release bio-agents like Chrysoperla zastrowi (green lacewing) larvae to prey on whitefly nymphs.",
+          "Apply entomopathogenic fungus Lecanicillium lecanii or Beauveria bassiana."
+        ],
+        "chemical_last": [
+          "No chemical cure exists for viral disease once inside plant. Management targets the vector insect.",
+          "If whitefly density exceeds threshold, seek advice from university/KVK on approved vector-control options.",
+          "Do not spray indiscriminate broad-spectrum chemicals that kill beneficial predators."
+        ],
+        "safety_notes": [
+          "Rogue out and burn infected plants early before vector spreads the virus.",
+          "Always wear PPE when applying vector management sprays."
+        ]
+      },
+      "hi": {
+        "name": "टमाटर का पर्ण कुंचन विषाणु (Leaf Curl Virus)",
+        "pathogen": "विषाणु (सफेद मक्खी द्वारा प्रसारित)",
+        "symptoms": "पत्तियां ऊपर की ओर मुड़ जाती हैं, किनारों पर पीलापन आता है, पौधा बौना रह जाता है और फूल झड़ने से फल नहीं बनते।",
+        "cultural": [
+          "सफेद मक्खियों की निगरानी के लिए प्रति एकड़ 15-20 पीले चिपचिपे ट्रैप लगाएं।",
+          "नर्सरी में 40-मेश कीट-रोधी जाली का प्रयोग करें।",
+          "खेत के आसपास से गाजर घास और अन्य खरपतवार तुरंत नष्ट करें।",
+          "खेत के चारों ओर ज्वार, मक्का या बाजरा की 2-3 घनी कतारें अवरोधक (बॉर्डर क्रॉप) के रूप में लगाएं।"
+        ],
+        "biological": [
+          "सफेद मक्खी के अंडों और निम्फ की रोकथाम के लिए 5% नीम अर्क (NSKE) का छिड़काव करें।",
+          "क्राइसोपर्ला मित्र कीटों का खेत में विसर्जन करें।",
+          "मित्र कवक वर्टिसिलियम लेकेनाई या ब्यूवेरिया बैसियाना का छिड़काव करें।"
+        ],
+        "chemical_last": [
+          "विषाणु का कोई रासायनिक इलाज नहीं है; केवल सफेद मक्खी कीट का नियंत्रण किया जाता है।",
+          "आवश्यकता पड़ने पर अनुशंसित कीटनाशी के लिए कृषि विज्ञान केंद्र से सलाह लें।"
+        ],
+        "safety_notes": [
+          "रोगी पौधों को तुरंत उखाड़कर नष्ट करें ताकि अन्य पौधों में संक्रमण न फैले।",
+          "छिड़काव के समय दस्ताने व मास्क का प्रयोग अनिवार्य है।"
+        ]
+      },
+      "mr": {
+        "name": "टोमॅटोवरील पर्णगुच्छ / चुरडा-मुरडा (Leaf Curl)",
+        "pathogen": "विषाणू (पांढऱ्या माशीद्वारे प्रसार)",
+        "symptoms": "पाने वरच्या बाजूला वाटीसारखी गोळा होतात, कडा पिवळ्या पडतात, झाडाची वाढ खुंटते आणि फुले गळून फळधारणा होत नाही.",
+        "cultural": [
+          "पांढऱ्या माशीच्या नियंत्रणासाठी एकरी १५-२० पिवळे चिकट सापळे लावा.",
+          "रोपवाटिकेत ४० मेशच्या कीटक प्रतिबंधक जाळीचा वापर करा.",
+          "बांधावरील गाजरगवत व इतर तण नष्ट करा.",
+          "शेताभोवती ज्वारी किंवा मका यासारख्या उंच पिकांचे २-३ ओळींचे कुंपण लावा."
+        ],
+        "biological": [
+          "५% निंबोळी अर्क किंवा कडुनिंब तेलाची दर आठवड्याला फवारणी करा.",
+          "क्रायसोपर्ला या परभक्षी मित्र कीटकांचा वापर करा.",
+          "व्हर्टिसिलियम लेकॅनी किंवा ब्युव्हेरिया बॅसियाना या जैविक बुरशीचा वापर करा."
+        ],
+        "chemical_last": [
+          "विषाणूजन्य रोगावर थेट रासायनिक औषध नसते; पांढऱ्या माशीच्या नियंत्रणासाठी कृषी तज्ज्ञांच्या सल्ल्यानेच शिफारशीत कीटकनाशक वापरा."
+        ],
+        "safety_notes": [
+          "रोगट झाडे सुरुवातीलाच उपटून नष्ट करा.",
+          "औषध फवारताना संरक्षक साधनांचा वापर करा."
+        ]
+      }
+    },
+    "tomato_leaf_mold": {
+      "crop": "tomato",
+      "scientific_name": "Passalora fulva",
+      "en": {
+        "name": "Tomato Leaf Mold",
+        "pathogen": "Fungus (Passalora fulva)",
+        "symptoms": "Pale greenish-yellow spots on upper leaf surfaces that transition to velvety olive-green to grayish-brown patches on the lower surface. Thrives under high humidity in protected cultivation or dense canopies.",
+        "cultural": [
+          "Prune lower leaves to improve ventilation in polyhouse and field canopy.",
+          "Keep relative humidity below 80% if in protected shade-nets or polyhouses.",
+          "Sterilize trellises, stakes, and pruning shears before reuse.",
+          "Avoid wet canopy overnight; irrigate early morning."
+        ],
+        "biological": [
+          "Apply bio-agents like Bacillus amyloliquefaciens or Trichoderma viride.",
+          "Neem-based organic botanical formulations."
+        ],
+        "chemical_last": [
+          "Standard protective copper-based compounds applied at early symptom onset if microclimate favors progression.",
+          "Verify ICAR guidelines for greenhouse vs open-field approved compounds."
+        ],
+        "safety_notes": [
+          "Ensure greenhouse is thoroughly ventilated during and after spraying.",
+          "Wear respirators in confined spaces."
+        ]
+      },
+      "hi": {
+        "name": "टमाटर का पर्ण फफूंद (Leaf Mold)",
+        "pathogen": "कवक (Passalora fulva)",
+        "symptoms": "पत्ती की ऊपरी सतह पर हल्के पीले धब्बे बनते हैं और निचली सतह पर जैतून जैसे हरे-भूरे रंग की मखमली फफूंद जम जाती है।",
+        "cultural": [
+          "पौधों की निचली पत्तियों की छंटाई करें ताकि हवा का बहाव ठीक रहे।",
+          "पॉलीहाउस या ग्रीनहाउस में आर्द्रता 80% से कम बनाए रखें।",
+          "पौधों को सहारा देने वाले बांस व तारों को रोपाई से पहले कीटाणुरहित करें।"
+        ],
+        "biological": [
+          "बैसिलस और ट्राइकोडर्मा का छिड़काव करें।",
+          "नीम आधारित वानस्पतिक मिश्रण का उपयोग करें।"
+        ],
+        "chemical_last": [
+          "संक्रमण अधिक होने पर कॉपर आधारित कवकनाशी का प्रयोग कृषि विशेषज्ञ की सलाह से करें।"
+        ],
+        "safety_notes": [
+          "बंद पॉलीहाउस में छिड़काव करते समय विशेष मास्क का उपयोग करें।"
+        ]
+      },
+      "mr": {
+        "name": "टोमॅटोवरील पानावरील बुरशी (Leaf Mold)",
+        "pathogen": "बुरशी (Passalora fulva)",
+        "symptoms": "पानाच्या वरच्या भागावर फिकट पिवळे डाग आणि मागच्या बाजूला मखमली तपकिरी-ऑलिव्ह रंगाची बुरशी दिसते.",
+        "cultural": [
+          "हवा खेळती राहण्यासाठी खालच्या फांद्यांची व पानांची छाटणी करा.",
+          "पॉलीहाऊसमध्ये आर्द्रता नियंत्रित ठेवा.",
+          "वापरण्यात येणारे बांबू व साहित्य निर्जंतुक करा."
+        ],
+        "biological": [
+          "ट्रायकोडर्मा व्हिरिडी किंवा बॅसिलसचा वापर करा.",
+          "कडुनिंब अर्काची फवारणी करा."
+        ],
+        "chemical_last": [
+          "तज्ज्ञांच्या सल्ल्यानुसार कॉपरयुक्त बुरशीनाशकांचा मर्यादित वापर करा."
+        ],
+        "safety_notes": [
+          "पॉलीहाऊसमध्ये फवारणीनंतर पुरेसे वायुवीजन होईपर्यंत आत जाणे टाळा."
+        ]
+      }
+    },
+    "tomato_healthy": {
+      "crop": "tomato",
+      "scientific_name": "Solanum lycopersicum",
+      "en": {
+        "name": "Healthy Tomato Crop",
+        "pathogen": "None (No Disease Detected)",
+        "symptoms": "Vibrant green leaves, uniform growth, healthy turgid stems, and absence of necrotic lesions or discoloration.",
+        "cultural": [
+          "Maintain balanced N-P-K nutrition with micronutrient supplementation (zinc, boron, calcium).",
+          "Practice drip irrigation with regular soil moisture monitoring.",
+          "Stake plants with trellises to keep foliage off ground contact.",
+          "Scout fields twice weekly to detect pest incursions early."
+        ],
+        "biological": [
+          "Apply prophylactic vermiwash or bio-fertilizers (Azotobacter, PSB).",
+          "Install pheromone traps (5 per acre) for fruit borer (Helicoverpa armigera) monitoring."
+        ],
+        "chemical_last": [
+          "No chemical interventions required. Avoid calendar spraying."
+        ],
+        "safety_notes": [
+          "Keep farm records up to date for good agricultural practices (GAP)."
+        ]
+      },
+      "hi": {
+        "name": "स्वस्थ टमाटर की फसल",
+        "pathogen": "कोई नहीं (रोग मुक्त)",
+        "symptoms": "पत्तियां हरी-भरी, चमकदार और तने मजबूत हैं। किसी प्रकार का दाग, धब्बा या मुरझान नहीं है।",
+        "cultural": [
+          "संतुलित एनपीके खाद के साथ सूक्ष्म पोषक तत्व (कैल्शियम, बोरॉन, जिंक) दें।",
+          "नियमित रूप से ड्रिप द्वारा संतुलित सिंचाई करें।",
+          "पौधों को सहारा (स्टेकिंग) दें ताकि फल व पत्तियां मिट्टी के संपर्क में न आएं।"
+        ],
+        "biological": [
+          "वर्मीवाश या जीवामृत का समय-समय पर प्रयोग करें।",
+          "फल छेदक कीट की निगरानी हेतु 5 फेरोमोन ट्रैप प्रति एकड़ लगाएं।"
+        ],
+        "chemical_last": [
+          "किसी भी रासायनिक छिड़काव की आवश्यकता नहीं है।"
+        ],
+        "safety_notes": [
+          "नियमित निगरानी रखें।"
+        ]
+      },
+      "mr": {
+        "name": "निरोगी टोमॅटो पीक",
+        "pathogen": "काहीही नाही (रोगमुक्त)",
+        "symptoms": "पाने टवटवीत हिरवीगार असून झाडांची वाढ निरोगी आहे. कोणताही रोग किंवा डाग आढळलेला नाही.",
+        "cultural": [
+          "संतुलित खतांचा वापर करा व सूक्ष्म अन्नद्रव्यांची पूर्तता करा.",
+          "ठिबक सिंचनाने योग्य प्रमाणात पाणी द्या.",
+          "झाडांना तारा किंवा बांबूचा आधार द्या."
+        ],
+        "biological": [
+          "जीवामृत किंवा व्हर्मीवॉशचा वापर करा.",
+          "फळ पोखरणाऱ्या अळीसाठी एकरी ५ कामगंध (फेरोमोन) सापळे लावा."
+        ],
+        "chemical_last": [
+          "कोणत्याही रासायनिक औषधांची गरज नाही."
+        ],
+        "safety_notes": [
+          "नियमित पाहणी करत राहा."
+        ]
+      }
+    },
+    "cotton_bacterial_blight": {
+      "crop": "cotton",
+      "scientific_name": "Xanthomonas citri pv. malvacearum",
+      "en": {
+        "name": "Cotton Bacterial Blight (Angular Leaf Spot)",
+        "pathogen": "Bacterium (Xanthomonas citri pv. malvacearum)",
+        "symptoms": "Small, angular water-soaked translucent lesions bounded by leaf veins, later turning dark brown/black. Also causes 'black arm' on branches and water-soaked spots on bolls.",
+        "cultural": [
+          "Use certified acid-delinted seeds treated before sowing.",
+          "Promptly rogue and destroy diseased seedlings and plant debris.",
+          "Avoid excessive vegetative growth by balancing nitrogen with potash.",
+          "Avoid sprinkler irrigation or flood irrigation that spreads bacteria."
+        ],
+        "biological": [
+          "Seed treatment and foliar spray of Pseudomonas fluorescens (10 g/kg seed or 2.5 kg/ha).",
+          "Foliar spray of 5% Neem oil to reduce bacterial spread via insects."
+        ],
+        "chemical_last": [
+          "Copper-based bactericides combined with agricultural antibiotics as recommended exclusively by ICAR-CICR Nagpur guidelines during high-risk outbreaks.",
+          "Never guess proportions; consult cotton extension specialist."
+        ],
+        "safety_notes": [
+          "Wear gloves, face protection, and rubber boots when spraying.",
+          "Prevent chemical runoff into nearby cattle ponds or drinking water sources."
+        ]
+      },
+      "hi": {
+        "name": "कपास का जीवाणु झुलसा (कोणीय पत्ती धब्बा / ब्लैक आर्म)",
+        "pathogen": "जीवाणु (Xanthomonas citri pv. malvacearum)",
+        "symptoms": "पत्तियों की शिराओं के बीच कोणीय, पानी जैसे पारदर्शी धब्बे बनते हैं जो बाद में काले-भूरे हो जाते हैं। टहनियों पर काले धब्बे (ब्लैक आर्म) और टिंडों पर सड़न होती है।",
+        "cultural": [
+          "हमेशा प्रमाणित और तेजाब से उपचारित (acid-delinted) बीजों का उपयोग करें।",
+          "रोगग्रस्त पौधों को उखाड़कर तुरंत नष्ट करें।",
+          "यूरिया का अत्यधिक उपयोग न करें, पोटाश की संतुलित मात्रा दें।"
+        ],
+        "biological": [
+          "स्यूडोमोनास फ्लोरोसेंस जैव-जीवाणुनाशक का बीज और पर्णीय उपचार करें।",
+          "5% नीम तेल का छिड़काव करें।"
+        ],
+        "chemical_last": [
+          "ICAR-केंद्रीय कपास अनुसंधान संस्थान (CICR) की सिफारिश के अनुसार कॉपर युक्त रसायन का उपयोग केवल अंतिम विकल्प के रूप में करें।"
+        ],
+        "safety_notes": [
+          "छिड़काव के समय दस्ताने व चश्मा पहनें।",
+          "दवा के अवशेषों को जल स्रोतों में न जाने दें।"
+        ]
+      },
+      "mr": {
+        "name": "कापसावरील जिवाणूजन्य करपा (कोनीय पानांवरील डाग / ब्लॅक आर्म)",
+        "pathogen": "जिवाणू (Xanthomonas citri pv. malvacearum)",
+        "symptoms": "पानांच्या शिरांच्या दरम्यान कोनाकृती पाणीदार डाग पडतात, जे नंतर काळे पडतात. फांद्यांवर काळे चट्टे (ब्लॅक आर्म) आणि बोंडांवर डाग दिसतात.",
+        "cultural": [
+          "नेहमी प्रमाणित व रासायनिक बीजप्रक्रिया केलेले बियाणे वापरा.",
+          "रोगट झाडे उपटून नष्ट करा.",
+          "नत्राचा अतिरेक टाळा व पालाशचा संतुलित वापर करा."
+        ],
+        "biological": [
+          "स्युडोमोनास फ्लुरोसेन्सने बीजप्रक्रिया व फवारणी करा.",
+          "५% निंबोळी अर्काची फवारणी करा."
+        ],
+        "chemical_last": [
+          "रोगाचा प्रादुर्भाव वाढल्यास केंद्रीय कापूस संशोधन संस्था (CICR) नागपूर यांनी शिफारस केलेल्या कॉपरयुक्त औषधांचा वापर कृषी अधिकाऱ्यांच्या सल्ल्यानेच करा."
+        ],
+        "safety_notes": [
+          "फवारणी करताना तोंड झाका व संरक्षक कपडे वापरा."
+        ]
+      }
+    },
+    "cotton_leaf_curl": {
+      "crop": "cotton",
+      "scientific_name": "Cotton Leaf Curl Virus (CLCuD)",
+      "en": {
+        "name": "Cotton Leaf Curl Disease (CLCuD)",
+        "pathogen": "Begomovirus (Whitefly-transmitted)",
+        "symptoms": "Upward or downward curling of leaf margins, thickened veins on leaf underside, enations (leaf-like outgrowths), and stunted bushy plant growth.",
+        "cultural": [
+          "Eradicate weed hosts such as Peeli Buti (Abutilon indicum) and Kanghi around the field.",
+          "Sow resistant/tolerant hybrids recommended by state universities.",
+          "Maintain border crops with bajra or maize to slow vector movement."
+        ],
+        "biological": [
+          "Yellow sticky traps (20 traps/acre) for continuous whitefly monitoring.",
+          "Neem formulations (azadirachtin 0.03% or 10,000 ppm) at early crop stage.",
+          "Encourage natural predators such as ladybird beetles and green lacewings."
+        ],
+        "chemical_last": [
+          "No cure for the virus itself. Apply targeted systemic insecticides against whitefly vectors strictly based on economic threshold levels (6-8 whiteflies per leaf).",
+          "Consult local KVK for approved insecticides to avoid resistance."
+        ],
+        "safety_notes": [
+          "Do not mix multiple unknown pesticides together in the spray tank.",
+          "Adhere strictly to personal safety gear norms."
+        ]
+      },
+      "hi": {
+        "name": "कपास का पत्ता मरोड़ रोग (CLCuD)",
+        "pathogen": "विषाणु (सफेद मक्खी द्वारा संचरण)",
+        "symptoms": "पत्तियों का ऊपर या नीचे मुड़ना, शिराओं का मोटा होना, पत्ती के नीचे पत्तीनुमा उभार (enations) और पौधे का झाड़ीनुमा हो जाना।",
+        "cultural": [
+          "खेत के आसपास उगे खरपतवार जैसे कंघी, पीली बूटी को नष्ट करें।",
+          "रोग प्रतिरोधी किस्मों/हाइब्रिड का चयन करें।",
+          "खेत के किनारों पर बाजरा या मक्का की पट्टी बोएं।"
+        ],
+        "biological": [
+          "सफेद मक्खी के लिए प्रति एकड़ 20 पीले चिपचिपे कार्ड लगाएं।",
+          "नीम तेल (10,000 ppm) का प्रारंभिक अवस्था में छिड़काव करें।",
+          "लेडीबर्ड भृंग जैसे मित्र कीटों का संरक्षण करें।"
+        ],
+        "chemical_last": [
+          "विषाणु का कोई सीधा रासायनिक उपचार नहीं है; केवल सफेद मक्खी की रोकथाम हेतु अनुशंसित दवा का केवीके की सलाह पर उपयोग करें।"
+        ],
+        "safety_notes": [
+          "कीटनाशकों को बिना सलाह मिलावट न करें।",
+          "सुरक्षात्मक पोशाक पहनकर ही छिड़काव करें।"
+        ]
+      },
+      "mr": {
+        "name": "कापसावरील पान मुरडा / चुरडा रोग (CLCuD)",
+        "pathogen": "विषाणू (पांढऱ्या माशीद्वारे प्रसार)",
+        "symptoms": "पाने वर किंवा खाली वळतात, शिरा जाड होतात, पानाच्या खाली लहान पानाच्या आकाराची वाढ दिसते आणि झाड खुंटते.",
+        "cultural": [
+          "बांधावरील तण नष्ट करा.",
+          "रोगप्रतिकारक वाणांची निवड करा.",
+          "शेताभोवती बाजरी किंवा मका लावा."
+        ],
+        "biological": [
+          "एकरी २० पिवळे चिकट सापळे लावा.",
+          "कडुनिंब अर्क किंवा निंबोळी तेलाची फवारणी करा.",
+          "ढालकिडा (लेडीबर्ड बीटल) या मित्र कीटकांचे रक्षण करा."
+        ],
+        "chemical_last": [
+          "पांढऱ्या माशीच्या आर्थिक नुकसान पातळीवर आधारित कृषी तज्ज्ञांच्या सल्ल्यानेच योग्य औषध वापरा."
+        ],
+        "safety_notes": [
+          "संरक्षक चष्मा व मास्कचा वापर अनिवार्य आहे."
+        ]
+      }
+    },
+    "cotton_bollworm": {
+      "crop": "cotton",
+      "scientific_name": "Helicoverpa armigera / Pectinophora gossypiella",
+      "en": {
+        "name": "Cotton Bollworm / Caterpillar Infestation",
+        "pathogen": "Insect Pest (American / Pink Bollworm)",
+        "symptoms": "Holes bored into squares, flowers, and developing bolls with larval excreta (frass). Flared squares (rosetted blooms) and premature boll drop.",
+        "cultural": [
+          "Deep summer ploughing to expose hibernating pupae to sunlight and birds.",
+          "Plant trap crops (marigold or castor) on field borders (1 row of marigold per 10 rows of cotton).",
+          "Regular collection and manual destruction of flared squares and rosette flowers."
+        ],
+        "biological": [
+          "Install pheromone traps (5-8 traps/acre) for monitoring adult moth emergence.",
+          "Release Trichogramma chilonis egg parasitoids at 1,50,000/ha at weekly intervals.",
+          "Spray Bacillus thuringiensis (Bt) kurstaki bio-insecticide formulations.",
+          "Foliar spray of HaNPV (Helicoverpa Nuclear Polyhedrosis Virus) @ 250 LE/ha in evening hours."
+        ],
+        "chemical_last": [
+          "Economic Threshold Level (ETL): 1 larva/meter row or 5-10% damaged bolls. Only then apply approved green-label / selective larvicides.",
+          "Strictly consult local KVK or CICR advisory for approved schedule."
+        ],
+        "safety_notes": [
+          "Do not allow livestock to graze on treated cotton fields.",
+          "Wash spray equipment away from potable water sources."
+        ]
+      },
+      "hi": {
+        "name": "कपास का सुंडी / इल्ली प्रकोप (Bollworm)",
+        "pathogen": "कीट (गुलाबी व अमेरिकन सुंडी)",
+        "symptoms": "फूलों, कलियों और टिंडों में छेद व मल-मूत्र का दिखना। फूल गुलाब जैसे (रोसेट) हो जाते हैं और समय से पहले गिर जाते हैं।",
+        "cultural": [
+          "गर्मी की गहरी जुताई करें ताकि सुंडी के प्यूपा नष्ट हो जाएं।",
+          "खेत के चारों ओर गेंदा या अरंडी ट्रैप फसल के रूप में लगाएं।",
+          "क्षतिग्रस्त कलियों और फूलों को तोड़कर नष्ट करें।"
+        ],
+        "biological": [
+          "निगरानी के लिए प्रति एकड़ 5-8 फेरोमोन ट्रैप लगाएं।",
+          "ट्राइकोग्रामा परजीवी ततैया के कार्ड लगाएं।",
+          "बैसिलस थुरिंजिएंसिस (Bt) या HaNPV का शाम के समय छिड़काव करें।"
+        ],
+        "chemical_last": [
+          "जब नुकसान 5-10% टिंडों में दिखे, तभी केवीके द्वारा अनुशंसित कीटनाशी का छिड़काव करें।"
+        ],
+        "safety_notes": [
+          "छिड़काव के बाद खेत में मवेशियों को न जाने दें।",
+          "पूरे सुरक्षा साधन पहनें।"
+        ]
+      },
+      "mr": {
+        "name": "कापसावरील बोंडअळी (Bollworm)",
+        "pathogen": "कीटक (गुलाबी व अमेरिकन बोंडअळी)",
+        "symptoms": "पात्या, फुले आणि बोंडांना छिद्रे दिसतात व विष्ठा बाहेर दिसते. फुले गुलाबासारखी चपट (रोसेट) होतात व बोंडे गळतात.",
+        "cultural": [
+          "उन्हाळ्यात खोल नांगरट करा जेणेकरून कोषावस्थेतील अळ्या नष्ट होतील.",
+          "सापळा पीक म्हणून बांधावर झेंडू किंवा एरंडी लावा.",
+          "प्रादुर्भावग्रस्त पात्या व रोसेट फुले गोळा करून नष्ट करा."
+        ],
+        "biological": [
+          "एकरी ५-८ कामगंध सापळे लावा.",
+          "ट्रायकोग्रामा परोपजीवी कीटकांचे ट्रायकोकार्ड वापरा.",
+          "बॅसिलस थुरिनजिएन्सिस (Bt) किंवा HaNPV चा सायंकाळी वापर करा."
+        ],
+        "chemical_last": [
+          "आर्थिक नुकसान पातळी ओलांडल्यासच कृषी अधिकाऱ्यांच्या सल्ल्यानुसार शिफारशीत कीटकनाशकाचा वापर करा."
+        ],
+        "safety_notes": [
+          "औषध फवारल्यानंतर जनावरांना शेतात चरण्यास सोडू नका."
+        ]
+      }
+    },
+    "onion_purple_blotch": {
+      "crop": "onion",
+      "scientific_name": "Alternaria porri",
+      "en": {
+        "name": "Onion Purple Blotch",
+        "pathogen": "Fungus (Alternaria porri)",
+        "symptoms": "Small, sunken, whitish lesions on leaves that enlarge rapidly and develop a purplish center surrounded by a yellow halo. Severe attacks cause leaf collapse and bulb shrinkage.",
+        "cultural": [
+          "Ensure wide ridge and furrow planting (15x10 cm) with good air movement.",
+          "Avoid excessive nitrogen fertilizer application which favors fungal colonization.",
+          "Destroy infected crop debris after harvest; avoid leaving residues in field.",
+          "Rotate with non-allium crops (pulses, cereals) for at least 3 years."
+        ],
+        "biological": [
+          "Seed and bulb dipping in Trichoderma viride suspension before planting.",
+          "Foliar spray of Trichoderma harzianum at early vegetative stage.",
+          "5% Neem Seed Kernel Extract (NSKE) spray as prophylactic treatment."
+        ],
+        "chemical_last": [
+          "Protective contact fungicides (e.g., Mancozeb or Copper Oxychloride) with sticker-spreader (surfactant), as onion leaves are waxy.",
+          "Always verify local agricultural university recommendations and adherence to pre-harvest intervals."
+        ],
+        "safety_notes": [
+          "Always add agricultural adjuvant/sticker as onion cuticle is waxy.",
+          "Wear protective gear during handling."
+        ]
+      },
+      "hi": {
+        "name": "प्याज का बैंगनी धब्बा रोग (Purple Blotch)",
+        "pathogen": "कवक (Alternaria porri)",
+        "symptoms": "पत्तियों पर छोटे, धंसे हुए सफेद धब्बे बनते हैं जो बढ़कर बीच में बैंगनी और किनारों पर पीले हो जाते हैं। पत्तियां सूखकर गिर जाती हैं और कंद का आकार छोटा रह जाता है।",
+        "cultural": [
+          "मेड़ और कूंड़ (रिज-फरो) विधि से 15x10 सेमी दूरी पर बुवाई करें।",
+          "अधिक नाइट्रोजन खाद से बचें।",
+          "फसल अवशेषों को खेत से बाहर जलाएं या गहरा दबाएं।",
+          "प्याज के बाद कम से कम 2-3 साल तक दलहनी या अनाज वाली फसलें लगाएं।"
+        ],
+        "biological": [
+          "रोपाई से पहले कंदों को ट्राइकोडर्मा घोल में उपचारित करें।",
+          "ट्राइकोडर्मा हरजिएनम का पत्तियों पर छिड़काव करें।",
+          "5% नीम बीज अर्क (NSKE) का रोग-प्रतिरोधी छिड़काव करें।"
+        ],
+        "chemical_last": [
+          "रोग की तीव्रता अधिक होने पर केवीके की सलाह पर अनुशंसित कवकनाशी में स्टीकर (चिपचिपा पदार्थ) मिलाकर छिड़कें क्योंकि प्याज की पत्तियां चिकनी होती हैं।"
+        ],
+        "safety_notes": [
+          "छिड़काव के समय मुंह, आंख और हाथों की सुरक्षा का ध्यान रखें।"
+        ]
+      },
+      "mr": {
+        "name": "कांद्यावरील जांभळा करपा (Purple Blotch)",
+        "pathogen": "बुरशी (Alternaria porri)",
+        "symptoms": "पानांवर सुरुवातीला लहान पांढरे डाग पडून नंतर त्यांचा मध्यभाग जांभळा होतो आणि भोवती पिवळे वलय दिसते. पाने मधून वाकतात व कांद्याचा आकार लहान राहतो.",
+        "cultural": [
+          "गादी वाफ्यावर योग्य अंतरावर (१५x१० सेमी) लागवड करा.",
+          "नत्राचा अतिरेक टाळा.",
+          "काढणीनंतर पिकाचे अवशेष शेतात न ठेवता नष्ट करा.",
+          "कांद्याऐवजी कडधान्य पिकांची फेरपालट करा."
+        ],
+        "biological": [
+          "लागवडीपूर्वी रोपांच्या मुळांवर ट्रायकोडर्माची प्रक्रिया करा.",
+          "ट्रायकोडर्मा हरझियानमची फवारणी करा.",
+          "५% निंबोळी अर्काचा प्रतिबंधक फवारा द्या."
+        ],
+        "chemical_last": [
+          "कांद्याची पाने तेलकट/मेणासारखी असल्याने शिफारशीत बुरशीनाशकासोबत स्टीकर (चिकट द्रव्य) मिसळूनच कृषी तज्ज्ञांच्या सल्ल्याने फवारणी करा."
+        ],
+        "safety_notes": [
+          "फवारणी करताना संरक्षक किट वापरा."
+        ]
+      }
+    },
+    "onion_downy_mildew": {
+      "crop": "onion",
+      "scientific_name": "Peronospora destructor",
+      "en": {
+        "name": "Onion Downy Mildew",
+        "pathogen": "Oomycete (Peronospora destructor)",
+        "symptoms": "Pale, pale-green to yellowish elongated patches on older leaves covered with violet-gray velvety fungal growth during humid, cool mornings. Leaves collapse downward from infected zones.",
+        "cultural": [
+          "Ensure excellent field drainage and avoid planting in low-lying shadow areas.",
+          "Orient crop rows in direction of prevailing winds to speed leaf drying.",
+          "Avoid sprinkler irrigation; prefer drip watering.",
+          "Destroy volunteer onions and all wild alliums near fields."
+        ],
+        "biological": [
+          "Prophylactic foliar sprays with Trichoderma spp. and Bacillus subtilis.",
+          "Neem formulation spray to discourage secondary pest entry."
+        ],
+        "chemical_last": [
+          "Preventive contact fungicides or systemic Oomycete-specific fungicides according strictly to Directorate of Onion and Garlic Research (DOGR - ICAR, Pune) guidelines.",
+          "Do not use off-label unverified mixtures."
+        ],
+        "safety_notes": [
+          "Follow safety interval (PHI) carefully before harvest for market safety.",
+          "Clean spray tanks thoroughly after use."
+        ]
+      },
+      "hi": {
+        "name": "प्याज का मृदुरोमिल आसिता (Downy Mildew)",
+        "pathogen": "कवक सदृश जीव (Peronospora destructor)",
+        "symptoms": "पत्तियों पर हल्के पीले लंबे धब्बे बनते हैं और नम व ठंडी सुबह में उन पर बैंगनी-धूसर रंग की मखमली फफूंद जमती है। पत्तियां बीच से मुड़कर लटक जाती हैं।",
+        "cultural": [
+          "खेत में पानी जमा न होने दें और छायादार जगहों पर बुवाई से बचें।",
+          "हवा की दिशा के अनुसार कतारें बनाएं ताकि पत्तियां जल्दी सूखें।",
+          "ड्रिप सिंचाई का उपयोग करें, फव्वारा सिंचाई से बचें।"
+        ],
+        "biological": [
+          "ट्राइकोडर्मा और बैसिलस का समय पर सुरक्षात्मक छिड़काव करें।",
+          "नीम अर्क का छिड़काव करें।"
+        ],
+        "chemical_last": [
+          "गंभीर प्रकोप की स्थिति में भारतीय कृषि अनुसंधान परिषद - प्याज एवं लहसुन अनुसंधान निदेशालय (DOGR राजगुरुनगर, पुणे) की सिफारिश अनुसार अनुशंसित कवकनाशी का प्रयोग करें।"
+        ],
+        "safety_notes": [
+          "दवा छिड़काव के बाद हाथ-मुंह साबुन से धोएं और प्रतीक्षा अवधि का ध्यान रखें।"
+        ]
+      },
+      "mr": {
+        "name": "कांद्यावरील भुरी / डाऊनी मिल्ड्यू (Downy Mildew)",
+        "pathogen": "ओमायसेट (Peronospora destructor)",
+        "symptoms": "पानांवर फिकट पिवळे लांबट चट्टे पडतात व थंड व दमट हवामानात त्यावर जांभळट-राखाडी मखमली बुरशी वाढते. पाने वाकून खाली पडतात.",
+        "cultural": [
+          "शेतात पाण्याचा निचरा योग्य ठेवा.",
+          "पाने लवकर सुकण्यासाठी वाऱ्याच्या दिशेने ओळी ठेवा.",
+          "तुषार सिंचन टाळा व ठिबक सिंचनाचा वापर करा."
+        ],
+        "biological": [
+          "ट्रायकोडर्मा आणि बॅसिलस सबटिलिसचा प्रतिबंधक फवारा द्या.",
+          "कडुनिंब अर्काची फवारणी करा."
+        ],
+        "chemical_last": [
+          "कांदा व लसूण संशोधन संचालनालय (DOGR राजगुरुनगर, पुणे) यांच्या शिफारशीनुसारच योग्य बुरशीनाशकाचा वापर कृषी तज्ज्ञांच्या सल्ल्याने करा."
+        ],
+        "safety_notes": [
+          "फवारणी करताना तोंडावर मास्क व हातमोजे वापरा."
+        ]
+      }
+    },
+    "onion_stemphylium_blight": {
+      "crop": "onion",
+      "scientific_name": "Stemphylium vesicarium",
+      "en": {
+        "name": "Onion Stemphylium Leaf Blight",
+        "pathogen": "Fungus (Stemphylium vesicarium)",
+        "symptoms": "Small, yellow-to-orange water-soaked oval spots on leaf blades that coalesce into elongated spindle-shaped dark brown lesions. Foliage prematurely dries and withers.",
+        "cultural": [
+          "Maintain optimal irrigation without waterlogging or prolonged leaf wetness.",
+          "Ensure adequate soil potassium and micronutrient levels.",
+          "Promptly remove diseased foliage after harvesting."
+        ],
+        "biological": [
+          "Apply bio-fungicides like Trichoderma harzianum.",
+          "Neem formulations to enhance natural plant defense."
+        ],
+        "chemical_last": [
+          "Protective fungicides applied with non-ionic sticker at initial appearance only if confirmed by field agronomist.",
+          "Follow ICAR-DOGR recommendations."
+        ],
+        "safety_notes": [
+          "Always store chemicals in locked cabinets away from food and children."
+        ]
+      },
+      "hi": {
+        "name": "प्याज का स्टेमफिलियम झुलसा (Stemphylium Blight)",
+        "pathogen": "कवक (Stemphylium vesicarium)",
+        "symptoms": "पत्तियों पर छोटे पीले-नारंगी अंडाकार धब्बे बनते हैं जो बाद में गहरे भूरे बड़े धब्बों में बदल जाते हैं। पत्तियां समय से पहले सूख जाती हैं।",
+        "cultural": [
+          "संतुलित सिंचाई करें, खेत में जलभराव न होने दें।",
+          "पोटाश और सूक्ष्म पोषक तत्वों का संतुलित प्रयोग करें।",
+          "फसल कटाई के बाद पत्तों को नष्ट करें।"
+        ],
+        "biological": [
+          "ट्राइकोडर्मा हरजिएनम का छिड़काव करें।",
+          "नीम उत्पादक जैविक अर्क का प्रयोग करें।"
+        ],
+        "chemical_last": [
+          "लक्षण दिखने पर केवीके या कृषि अधिकारी द्वारा अनुशंसित कवकनाशी का स्टीकर के साथ छिड़काव करें।"
+        ],
+        "safety_notes": [
+          "दवाओं को बच्चों और खाद्य सामग्री से दूर रखें।"
+        ]
+      },
+      "mr": {
+        "name": "कांद्यावरील स्टेमफिलियम करपा (Stemphylium Blight)",
+        "pathogen": "बुरशी (Stemphylium vesicarium)",
+        "symptoms": "पानांवर लहान पिवळसर-नारंगी लंबगोलाकार डाग पडतात जे मोठे होऊन काळपट तपकिरी होतात. पाने सुकतात.",
+        "cultural": [
+          "योग्य पाण्याचा निचरा ठेवा.",
+          "पालाश व सूक्ष्म अन्नद्रव्यांचा संतुलित पुरवठा करा.",
+          "काढणीनंतर शिल्लक राहिलेला पाला शेताबाहेर नष्ट करा."
+        ],
+        "biological": [
+          "ट्रायकोडर्मा हरझियानमची फवारणी करा.",
+          "निंबोळी अर्काचा वापर करा."
+        ],
+        "chemical_last": [
+          "रोगाची सुरुवात दिसताच कृषी अधिकाऱ्यांच्या मार्गदर्शनाखाली शिफारशीत बुरशीनाशक स्टीकरसह फवारा."
+        ],
+        "safety_notes": [
+          "कीटकनाशके नेहमी कुलूपबंद ठिकाणी ठेवा."
+        ]
+      }
+    }
+  }
+}
